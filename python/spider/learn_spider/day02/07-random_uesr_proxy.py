@@ -3,11 +3,10 @@ import urllib.request
 
 def proxy_user():
     proxy_list = [
-        {"https": ""},
-        # {"https":"106.75.226.36:808"},
-        # {"https":"61.135.217.7:80"},
-        # {"https":"125.70.13.77:8080"},
-        # {"https":"118.190.95.35:9001"}
+        {"https": "106.75.226.36:808"},
+        {"https": "61.135.217.7:80"},
+        {"https": "125.70.13.77:8080"},
+        {"https": "118.190.95.35:9001"}
     ]
     for proxy in proxy_list:
         print(proxy)
@@ -17,8 +16,8 @@ def proxy_user():
         opener = urllib.request.build_opener(proxy_handler)
 
         try:
+            # 因为是免费代理, 所以不一定好用, 这里加上超时, 判断一下.
             data = opener.open("http://www.baidu.com", timeout=1)
-
             haha = data.read()
             print(haha)
         except Exception as e:

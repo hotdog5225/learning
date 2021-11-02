@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 class TestClass {
 public:
@@ -36,6 +37,8 @@ public:
     // static member function, used to access private static member, with no need to instantiate an object!
     // and static member function can only access other static member/function.
     static int get_private_staic_member();
+
+    static std::vector<int> static_vec;
 
 private:
     std::string m_name{}; // should always init member by initialization list

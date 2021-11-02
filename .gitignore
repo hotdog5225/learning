@@ -152,3 +152,6 @@ fabric.properties
 
 # pycharm
 .DS_Store
+# Clion
+cmake-build-debug/
+CMakeLists.txt

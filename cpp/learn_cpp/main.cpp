@@ -69,5 +69,11 @@ int main() {
 
     /*------------------*/
 
+    std::cout << "[call static member through Class]: ";
+    for (const auto int_member : TestClass::static_vec) {
+        std::cout << std::to_string(int_member) << ", ";
+    }
+    std::cout << '\n';
+
     return 0;
 }

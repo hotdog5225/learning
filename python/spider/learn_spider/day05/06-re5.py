@@ -13,12 +13,10 @@ result = patter.search(one)
 result = patter.findall(one)
 
 # sub  替换字符串
-result = patter.sub('#',one)
+result = patter.sub('#', one)
+print(result)
 
 # split  拆分
 patter = re.compile(' ')
 result = patter.split(one)
-
-
-
 print(result)

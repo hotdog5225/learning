@@ -6,6 +6,8 @@ one = """
     1234567778888N
 """
 
+# re.S : dot可以匹配换行符
+# re.I : 忽略大小写
 pattern = re.compile('m(.*)n', re.S | re.I)
 result = pattern.findall(one)
 print(result)

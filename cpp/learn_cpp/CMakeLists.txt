@@ -3,4 +3,4 @@ project (learn_cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(cpp main.cpp TestClass.h TestClass.cpp)
+add_executable(cpp main.cpp TestClass.h TestClass.cpp friend.cpp Storage.cpp Storage.h Display.cpp Display.h)

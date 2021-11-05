@@ -41,3 +41,6 @@ class BJGuaHaoCrawler(object):
         driver.quit()
 
         return html
+
+    def appointment(self, headers, cookies):
+        return

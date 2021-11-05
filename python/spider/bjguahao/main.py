@@ -22,8 +22,7 @@ from datetime import datetime
 # Q: 图片验证码识别, 触发验证码下发, 获取短信验证码, 登录
 
 #scrapy
-# https://sangaline.com/post/advanced-web-scraping-tutorial/ # bypass 302
-#
+# https://sangaline.com/post/advanced-web-scraping-tutorial/ # bypass 403
 
 # datetime related
 # https://www.programiz.com/python-programming/datetime/timestamp-datetime
@@ -278,6 +277,7 @@ if __name__ == '__main__':
         "week": 1
     }
     url = 'https://www.114yygh.com/web/product/list?_time=' + str_time
+    wb.Chrome().get(url)
     response = session_request.post(url, data=data_dict)
     try:
         resp_data_dict = response.json()

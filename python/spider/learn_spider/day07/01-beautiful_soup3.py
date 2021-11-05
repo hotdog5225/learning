@@ -22,9 +22,6 @@ and they lived at the bottom of a well.</p>
 
 """
 
-
-
-
 # 1.转类型 bs4.BeautifulSoup'
 soup = BeautifulSoup(html_doc, 'lxml')
 
@@ -57,12 +54,6 @@ result = soup.select('a[id="link3"]')
 # 标签包裹的内容---list
 result = soup.select('.title')[0].get_text()
 
-
 # 标签的属性
 # result = soup.select('#link1')[0].get('href')
 print(result)
-
-
-
-
-

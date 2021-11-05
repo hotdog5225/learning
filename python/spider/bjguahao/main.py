@@ -1,17 +1,16 @@
+import selenium.webdriver as wb
+import http.cookiejar
 import json
-import re
-import sqlite3
+import random
 import time
 
-import my_crawler.Crawler
+from my_crawler.Crawler import BJGuaHaoCrawler
 
 import requests
 from requests_html import HTMLSession
 
 from bs4 import BeautifulSoup
 import bs4.element
-
-import pandas as pd
 
 import mysql.connector
 from mysql.connector import Error
@@ -21,6 +20,10 @@ from datetime import datetime
 
 
 # Q: 图片验证码识别, 触发验证码下发, 获取短信验证码, 登录
+
+#scrapy
+# https://sangaline.com/post/advanced-web-scraping-tutorial/ # bypass 302
+#
 
 # datetime related
 # https://www.programiz.com/python-programming/datetime/timestamp-datetime
@@ -36,32 +39,20 @@ from datetime import datetime
 # scraping data from a javascript website
 # http://theautomatic.net/2019/01/19/scraping-data-from-javascript-webpage-python/
 # https://pypi.org/project/requests-html/
-
-def getOTP():
-    # connect with chat.db
-    conn = sqlite3.connect("/Users/wuzewei.wzw/Library/Messages/chat.db")
-    # get message and sender's info
-    messages = pd.read_sql_query("select * from message order by ROWID desc limit 1", conn)
-    handles = pd.read_sql_query("select * from handle order by ROWID desc limit 1", conn)
-
-    # merge message and sender's info
-    messages.rename(columns={'ROWID': 'message_id'}, inplace=True)
-    handles.rename(columns={'id': 'phone_number', 'ROWID': 'handle_id'}, inplace=True)
-    imessage_df = pd.merge(messages[['text', 'handle_id', 'date', 'is_sent', 'message_id']],
-                           handles[['handle_id', 'phone_number']], on='handle_id', how='left')
-
-    # print message text we expected
-    re_code_pattern = re.compile(r'您的短信验证码为【(\d{6})】')
-    for index, row in imessage_df.iterrows():
-        match_code = re.search(re_code_pattern, row['text'], flags=0)
-        print("Msg Code: ", match_code.group(1))
-        return match_code
-
+# render page with cookies
+# https://stackoverflow.com/questions/63903596/python-requests-html-render-html-with-cookies
+# render does not work
+# https://stackoverflow.com/questions/59665773/why-render-requests-html-doesnt-scrape-dynamic-content
+# tutorial
+# http://theautomatic.net/2019/01/19/scraping-data-from-javascript-webpage-python/
+# issue : unexpected param cookies
+# https://github.com/psf/requests-html/issues/429
 
 def get_cookie():
     # get cookie manually
     # TODO set cookie manually
-    origin_cookie_str = 'imed_session=uQwGnhs9ZszCqfx0mhhv8q4RTFviqcyx_5453578; imed_session=uQwGnhs9ZszCqfx0mhhv8q4RTFviqcyx_5453578; SECKEY_CID=b496fb8f52209250ddcd517d438902a36a8c4303; BMAP_SECKEY=68929e83979a78fd015ed358fefc384ad77c1b324b8cc6f266f2a8ebe521879133a4ab1c7df9cb3c91dfbc5248943b06f8c7b7cc20a008330338202950984db93c6852080a710ea0d08a93346b9c9c52165a6912f3345de65fe7563a8123b57548c033076d5704b3bf186cfcfe38c610677784dbb502d56d78e6ef7dab5b1eb01c24f574b4b4a436134bf66192b1baa3b5b6c9705bc1c8d8536873338733f63aa5f07f2164f9cd25185c385ade0fcf2b21b648c743518f165e46c69a0b50b697ead084111812bf2d2a9e00cec732fef33bb3d7db183f55fce53bff96f350b84fab7318c0056d9ee8d947e2ca9a105b36; secure-key=f1d291ec-1370-4bd1-aaba-c71aab40bd45; imed_session=uQwGnhs9ZszCqfx0mhhv8q4RTFviqcyx_5453578; cmi-user-ticket=5OZgXINKlUNGpVg_MK_Tsxm_WghKtaLWMz8WZg..; agent_login_img_code=6777c8a2b65b46db85c2e232a077d1c9; imed_session_tm=1636073852950'
+    origin_cookie_str = 'imed_session=0nE81eZWGlDT5O9cz0NAzbAkarlgYzR1_5453766; imed_session=0nE81eZWGlDT5O9cz0NAzbAkarlgYzR1_5453766; imed_session=Ifaqx1G2qYL7U9PIEH8OqlJtHMLx3UvG_5453756; SECKEY_CID=b496fb8f52209250ddcd517d438902a36a8c4303; BMAP_SECKEY=68929e83979a78fd015ed358fefc384ad77c1b324b8cc6f266f2a8ebe521879133a4ab1c7df9cb3c91dfbc5248943b06f8c7b7cc20a008330338202950984db93c6852080a710ea0d08a93346b9c9c52165a6912f3345de65fe7563a8123b57548c033076d5704b3bf186cfcfe38c610677784dbb502d56d78e6ef7dab5b1eb01c24f574b4b4a436134bf66192b1baa3b5b6c9705bc1c8d8536873338733f63aa5f07f2164f9cd25185c385ade0fcf2b21b648c743518f165e46c69a0b50b697ead084111812bf2d2a9e00cec732fef33bb3d7db183f55fce53bff96f350b84fab7318c0056d9ee8d947e2ca9a105b36; cmi-user-ticket=tiWrDsSsNgxzQ_Ud3_ySP2Vs928sR44bBjVJdg..; secure-key=bba4311a-61d2-406c-99fc-5e25c7b7aa59; agent_login_img_code=7dc7ab1cf1dd4f29841f6e2b4de86dcf; imed_session=CL0BU6jZOyLg4j97NCOYksigCBZPDTBI_5453770; imed_session_tm={}' \
+        .format(str(int(time.time()) * 1000))
     cookie_dict = {}
     cookie_list = origin_cookie_str.split('; ')
     for cookie in cookie_list:
@@ -191,9 +182,63 @@ def get_basic_info(hosp_name, dept_second_name):
 
         return {
             'hosp_id': hosp_record_tuple[2],
+            'dept_first_name': dept_record_tuple[0],
             'code': dept_record_tuple[4],
             'code2': dept_record_tuple[5],
         }
+
+
+def get_random_agent():
+    agent_list = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36 OPR/63.0.3368.43',
+        'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/534.54.16 (KHTML, like Gecko) Version/5.1.4 Safari/534.54.16',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3722.400 QQBrowser/10.5.3739.400',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36 QIHU 360EE',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 UBrowser/6.2.3964.2 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 SE 2.X MetaSr 1.0',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36 LBBROWSER',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.79 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3947.100 Safari/537.36']
+    return agent_list[random.randint(0, 11)]
+
+
+def get_random_refer():
+    refer_list = [
+        'https://www.114yygh.com/hospital/162/d4a80dff4262f5815eee0362515986cf/200052524/source',
+    ]
+
+
+def get_headers():
+    headers = {
+        'Connection': 'keep-alive',
+        'sec-ch-ua': '"Chromium";v="92", " Not A;Brand";v="99", "Google Chrome";v="92"',
+        'Accept': 'application/json, text/plain, */*',
+        'Request-Source': 'PC',
+        'sec-ch-ua-mobile': '?0',
+        'User-Agent': get_random_agent(),
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Dest': 'empty',
+        'Referer': 'https://www.114yygh.com/hospital/162/d4a80dff4262f5815eee0362515986cf/200052524/source',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
+        'x-tt-env': 'boe_dpa_i18n_creative_platform',
+        'Host': 'www.114yygh.com'
+    }
+    return headers
+
+
+def get_session():
+    cookie_dict = get_cookie()
+    cookie_jar = http.cookiejar.CookieJar()
+    headers = get_headers()
+    session = requests.Session()
+    session.headers = headers
+    session.cookies = requests.utils.add_dict_to_cookiejar(cookie_jar, cookie_dict)
+    return session
 
 
 if __name__ == '__main__':
@@ -208,59 +253,47 @@ if __name__ == '__main__':
     hosp_name = '北京大学第三医院'
     dept_second_name = '肛肠门诊'
     basic_info_dict = get_basic_info(hosp_name, dept_second_name)
-    # dict = {
-    #     'hosp_id': hosp_record_tuple[2],
-    #     'code': dept_record_tuple[4],
-    #     'code2': dept_record_tuple[5],
-    # }
     firstDeptCode = basic_info_dict['code']
     secondDeptCode = basic_info_dict['code2']
     hosCode = basic_info_dict['hosp_id']
-    print("诊室基础信息: 一级诊室code:{}, 二级诊室code:{}, 医院id:{}".format(firstDeptCode, secondDeptCode, hosCode))
+    dept_first_name = basic_info_dict['dept_first_name']
+    print("基础信息: {}({}), {}({}), {}()".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
+                                              secondDeptCode))
 
     # TODO delete
-    firstDeptCode ='hyde_EBH_c7d1eb9d_vir'
-    secondDeptCode = 'BH'
-    hosCode = 'H14152001'
+    # firstDeptCode = 'hyde_EBH_c7d1eb9d_vir'
+    # secondDeptCode = 'BH'
+    # hosCode = 'H14152001'
+
+    session_request = get_session()
 
     # get department register info
-    # TODO: set cookie manually
-    cookie_dict = get_cookie()
-
-    # header
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36',
-        'Referer': 'https://www.114yygh.com/hospital/1/home',
-        'Request-Source': 'PC'
-    }
-
-    str_time = str(time.time() * 1000)
-    session = requests.Session()
+    str_time = str(int(time.time()) * 1000)
 
     # get dept time list page
-    data_json = {
+    data_dict = {
         "firstDeptCode": firstDeptCode,  # 诊室code1
         "secondDeptCode": secondDeptCode,  # 诊室code2
         "hosCode": hosCode,  # 医院编号
         "week": 1
     }
-    response = session.post('https://www.114yygh.com/web/product/list?_time=' + str_time, headers=headers,
-                            cookies=cookie_dict, json=data_json)
+    url = 'https://www.114yygh.com/web/product/list?_time=' + str_time
+    response = session_request.post(url, data=data_dict)
     try:
-        data_dict = response.json()
-        if data_dict['resCode'] != 0:
-            print(data_dict['msg'])
+        resp_data_dict = response.json()
+        if resp_data_dict['resCode'] != 0:
+            print(resp_data_dict['msg'])
             exit()
     except Exception as e:
         print(e)
         exit()
 
-    calendars = data_dict['data']['calendars']
-    next_appoint_time = datetime.fromtimestamp(data_dict['data']['fhTimestamp'] / 1000)
+    calendars = resp_data_dict['data']['calendars']
+    next_appoint_time = datetime.fromtimestamp(resp_data_dict['data']['fhTimestamp'] / 1000)
     next_appoint_time_formated = datetime.strptime(str(next_appoint_time), '%Y-%m-%d %H:%M:%S')
     print('下次放号时间: {}'.format(next_appoint_time_formated))
 
-    # 获取预约日期
+    # check which day is available
     target = ''
     for singleday in calendars:
         status = singleday['status']
@@ -269,19 +302,23 @@ if __name__ == '__main__':
         # NO_INVENTORY: 无号
         # TOMORROW_OPEN: 即将放号
         if status == 'AVAILABLE':
-            target = singleday['dutyDate']
+            target = singleday['dutyDate']  # 2021-11-11
+            week_desc = singleday['weekDesc']  # 周日
             print('{}({})is available'.format(singleday['weekDesc'], singleday['dutyDate']))
+            exit
 
-            # TODO choose which one to appoint
+            # TODO choose which day to appoint
+
             # appoint specific target day
-            # get dept detail on target date
-            data_json = {
-                "firstDeptCode": firstDeptCode,  # 诊室code1
-                "secondDeptCode": secondDeptCode,  # 诊室code2
-                "hosCode": hosCode,  # 医院编号
-                "target": target # 挂号日期
-            }
-            response = session.post('https://www.114yygh.com/web/product/detail?_time=' + str_time, headers=headers,
-                                    cookies=cookie_dict, json=data_json)
-            print(json.loads(response.json()))
+            # page is rendered by javascript, use selenium
+            url = "https://www.114yygh.com/hospital/{}/{}/{}/source".format(hosCode, firstDeptCode, secondDeptCode)
+            bjGuaHaoCrawler = BJGuaHaoCrawler()
+            dept_detail_html = bjGuaHaoCrawler.get_html_dept_detail(url, week_desc)
+
+            # parse html
+            soup = BeautifulSoup(dept_detail_html, "lxml")
+            morning_num_remain_tag = soup.find('span', attrs={
+                'style': 'font-family: magic_1;',
+            })
+            print(repr(morning_num_remain_tag.string))
             exit()

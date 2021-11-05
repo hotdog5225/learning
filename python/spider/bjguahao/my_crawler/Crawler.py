@@ -2,6 +2,7 @@ from selenium import webdriver as wb
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import InvalidCookieDomainException
 
 
 class ICrawler(object):
@@ -10,7 +11,7 @@ class ICrawler(object):
 
 
 class BJGuaHaoCrawler(object):
-    def get_html(self, url):
+    def get_html_homepage(self, url):
         # 动态网页抓取
         driver = wb.Chrome()
         driver.get(url)
@@ -40,6 +41,50 @@ class BJGuaHaoCrawler(object):
         # 退出driver
         driver.quit()
 
+        return html
+
+    def add_cookie_to_driver(self, driver, url, cookie_dict):
+        try:
+            # to avoid InvalidCookieDomainException: https://stackoverflow.com/questions/59877561/selenium-common-exceptions-invalidcookiedomainexception-message-invalid-cookie
+            driver.get(url)
+
+            # set cookie
+            for key, value in cookie_dict.items():
+                driver.add_cookie({
+                    'name': key,
+                    'value': value,
+                    'domain': ".114yygh.com",
+                    'path': '/',
+                    'httpOnly': True,
+                })
+            return driver
+        except Exception as e:
+            print(e)
+            exit()
+
+    def get_html_dept_detail(self, url, week_desc, cookies_dict):
+        # 动态网页抓取
+        driver = wb.Chrome()
+        driver = self.add_cookie_to_driver(driver, url, cookies_dict)
+        driver.get(url)
+
+        # 等待要抓取的元素
+        driver.implicitly_wait(20)
+        try:
+            # 点击可挂号的日期
+            date_tag = driver.find_element(By.XPATH, '//span[@class="week" and text()="{}"]'.format(week_desc))
+            date_tag.click()
+            # 点击可挂号的上下午
+            available_button_tag_list = driver.find_elements(By.XPATH, "//div[contains(text(),'剩余')]")  # 可挂号的button
+            for but_tag in available_button_tag_list:
+                but_tag.click()
+            driver.find_elements(By.XPATH, "//div[@class='el-scrollbar__view']/div[contains(@class, 'list-item')]")
+        except Exception as e:
+            print(e)
+            exit()
+
+        html = driver.page_source
+        driver.quit()
         return html
 
     def appointment(self, headers, cookies):

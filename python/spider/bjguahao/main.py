@@ -18,34 +18,8 @@ from mysql.connector import connect, Error
 
 from datetime import datetime
 
+from verify_code.verify_code import PILVerifyCode
 
-# Q: 图片验证码识别, 触发验证码下发, 获取短信验证码, 登录
-
-#scrapy
-# https://sangaline.com/post/advanced-web-scraping-tutorial/ # bypass 403
-
-# datetime related
-# https://www.programiz.com/python-programming/datetime/timestamp-datetime
-
-# mysql
-# https://realpython.com/python-mysql/
-
-# determine whether response has data
-# https://stackoverflow.com/questions/37605278/how-to-determine-if-my-python-requests-call-to-api-returns-no-data/37605377
-# requests with bs4, selenium
-# https://stackoverflow.com/questions/32937590/how-to-fake-javascript-enabled-in-python-requests-beautifulsoup
-
-# scraping data from a javascript website
-# http://theautomatic.net/2019/01/19/scraping-data-from-javascript-webpage-python/
-# https://pypi.org/project/requests-html/
-# render page with cookies
-# https://stackoverflow.com/questions/63903596/python-requests-html-render-html-with-cookies
-# render does not work
-# https://stackoverflow.com/questions/59665773/why-render-requests-html-doesnt-scrape-dynamic-content
-# tutorial
-# http://theautomatic.net/2019/01/19/scraping-data-from-javascript-webpage-python/
-# issue : unexpected param cookies
-# https://github.com/psf/requests-html/issues/429
 
 def get_cookie():
     # get cookie manually
@@ -241,6 +215,9 @@ def get_session():
 
 
 if __name__ == '__main__':
+    VC = PILVerifyCode()
+    VC.virify_code()
+    exit()
     # write hospital info to db
     # dump_hospital_info()
     # exit()

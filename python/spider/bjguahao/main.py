@@ -4,6 +4,10 @@ import json
 import random
 import time
 
+from login.login import Login
+from verify_code.verify_code import BaiduVerifyCode
+from message.message import Message
+
 from my_crawler.Crawler import BJGuaHaoCrawler
 
 import requests
@@ -17,9 +21,6 @@ from mysql.connector import Error
 from mysql.connector import connect, Error
 
 from datetime import datetime
-
-from verify_code.verify_code import PILVerifyCode
-
 
 def get_cookie():
     # get cookie manually
@@ -137,8 +138,8 @@ def dump_department_info():
 
 
 def get_basic_info(hosp_name, dept_second_name):
-    hosp_sql = "select * from hospital where name = '{}'".format(hosp_name)
-    dept_sql = "select * from department where second_name = '{}'".format(dept_second_name)
+    hosp_sql = "select name, hosp_id from hospital where name = '{}'".format(hosp_name)
+    dept_sql = "select name, second_name, dept_code_1, dept_code_2 from department where second_name = '{}'".format(dept_second_name)
     with connect(
             host="localhost",
             user='root',
@@ -154,10 +155,10 @@ def get_basic_info(hosp_name, dept_second_name):
         dept_record_tuple = cusor.fetchone()
 
         return {
-            'hosp_id': hosp_record_tuple[2],
+            'hosp_id': hosp_record_tuple[1],
             'dept_first_name': dept_record_tuple[0],
-            'code': dept_record_tuple[4],
-            'code2': dept_record_tuple[5],
+            'code': dept_record_tuple[2],
+            'code2': dept_record_tuple[3],
         }
 
 
@@ -205,19 +206,17 @@ def get_headers():
 
 
 def get_session():
-    cookie_dict = get_cookie()
-    cookie_jar = http.cookiejar.CookieJar()
+    # cookie_dict = get_cookie()
+    # cookie_jar = http.cookiejar.CookieJar()
     headers = get_headers()
+
     session = requests.Session()
     session.headers = headers
-    session.cookies = requests.utils.add_dict_to_cookiejar(cookie_jar, cookie_dict)
+    # session.cookies = requests.utils.add_dict_to_cookiejar(cookie_jar, cookie_dict)
     return session
 
 
 if __name__ == '__main__':
-    VC = PILVerifyCode()
-    VC.virify_code()
-    exit()
     # write hospital info to db
     # dump_hospital_info()
     # exit()
@@ -233,7 +232,7 @@ if __name__ == '__main__':
     secondDeptCode = basic_info_dict['code2']
     hosCode = basic_info_dict['hosp_id']
     dept_first_name = basic_info_dict['dept_first_name']
-    print("基础信息: {}({}), {}({}), {}()".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
+    print("待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
                                               secondDeptCode))
 
     # TODO delete
@@ -242,6 +241,24 @@ if __name__ == '__main__':
     # hosCode = 'H14152001'
 
     session_request = get_session()
+    # set cookie by remote
+    url = 'https://www.114yygh.com/web/img/getImgCode?_time={}'.format(str(int(time.time()) * 1000))
+    session_request.get(url)
+
+    # login
+    # get captcha code
+    login = Login()
+    login.getCptcharCode(session_request)
+    # recognize cpatcha code
+    baiduOCR = BaiduVerifyCode()
+    code = baiduOCR.virify_code()
+    # check code
+    login.checkCode(session_request, code)
+    # get sms code
+    login.getSMSCode(session_request, code, '16601126121')
+    # read sms msg code from db
+    sms_code = input("sms code: ")
+    exit()
 
     # get department register info
     str_time = str(int(time.time()) * 1000)
@@ -254,7 +271,6 @@ if __name__ == '__main__':
         "week": 1
     }
     url = 'https://www.114yygh.com/web/product/list?_time=' + str_time
-    wb.Chrome().get(url)
     response = session_request.post(url, data=data_dict)
     try:
         resp_data_dict = response.json()

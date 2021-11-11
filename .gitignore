@@ -155,3 +155,11 @@ fabric.properties
 # Clion
 cmake-build-debug/
 CMakeLists.txt
+
+# secret
+secret.py
+
+#pycharm
+__pycache__
+
+.git

@@ -54,23 +54,23 @@ cookies_list = cookies.split('; ')
 for cookie in cookies_list:
     cook_dict[cookie.split('=')[0]] = cookie.split('=')[1]
 # (2)字典推导式
-cook_dict = {cookie.split('=')[0]:cookie.split('=')[1] for cookie in cookies.split('; ')}
+cook_dict = {cookie.split('=')[0]: cookie.split('=')[1] for cookie in cookies.split('; ')}
 
-response = requests.get(url, headers=headers, cookies=cook_dict)
+response = requests.get(url, headers=header, cookies=cook_dict)
 
 # use session to auto save cookie
 session = requests.session()
 # 1.代码登录
 login_url = 'https://www.yaozh.com/login'
 login_form_data = {
-    'username':'xiaomaoera12',
+    'username': 'xiaomaoera12',
     'pwd': 'lina081012',
     'formhash': '54AC1EE419',
     'backurl': 'https%3A%2F%2Fwww.yaozh.com%2F',
 }
-login_response = session.post(login_url,data=login_form_data,headers=header)
+login_response = session.post(login_url, data=login_form_data, headers=header)
 # 2.登录成功之后 带着 有效的cookies 访问 请求目标数据
-data = session.get(url,headers=header).content.decode()
+data = session.get(url, headers=header).content.decode()
 
 # ===================================================================================================
 '''

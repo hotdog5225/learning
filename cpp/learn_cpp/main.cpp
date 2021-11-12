@@ -77,5 +77,31 @@ int main() {
     }
     std::cout << '\n';
 
+    /*------------------*/
+    // const , reference, pointer
+
+    // reference to const(常量引用): const &
+    int non_const_var = 2;
+    // must be initialized when define
+    const int& ref_to_const = non_const_var; // 常量引用可以绑定non-const对象
+    std::cout << "[ref_to_const bind a non_const var]: " << std::to_string(ref_to_const) << '\n';
+
+    // pointer to const(指向常量的指针): const *
+    // can not be initialized when defined
+    const int* pointer_to_const ; // 指向常量的指针, 可以指向non-const对象
+    pointer_to_const = &non_const_var;
+    std::cout << "[pointer_to_const points to a non_const var]: " << std::to_string(*pointer_to_const) << '\n';
+    // can change to point another var
+    int non_const_var_2 = 3;
+    pointer_to_const = &non_const_var_2;
+
+    // const pointer: * const
+    int * const const_pointer = &non_const_var;
+    // can change the object it points to
+    *const_pointer = 4;
+    // can not change to point another object: because the pointer itself is a Const object.
+    // const_pointer = &non_const_var_2;
+
+
     return 0;
 }

@@ -22,6 +22,9 @@ from mysql.connector import connect, Error
 
 from datetime import datetime
 
+from conf.config import PersonConfig
+from conf.config import RegistorInfo
+
 def get_cookie():
     # get cookie manually
     # TODO set cookie manually
@@ -225,6 +228,11 @@ if __name__ == '__main__':
     # dump_department_info()
     # exit()
 
+    # get basic info
+    person_info = PersonConfig()
+    register_info = RegistorInfo()
+    phone_num = person_info.phone_num
+
     hosp_name = '北京大学第三医院'
     dept_second_name = '肛肠门诊'
     basic_info_dict = get_basic_info(hosp_name, dept_second_name)
@@ -234,11 +242,6 @@ if __name__ == '__main__':
     dept_first_name = basic_info_dict['dept_first_name']
     print("待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
                                               secondDeptCode))
-
-    # TODO delete
-    # firstDeptCode = 'hyde_EBH_c7d1eb9d_vir'
-    # secondDeptCode = 'BH'
-    # hosCode = 'H14152001'
 
     session_request = get_session()
     # set cookie by remote
@@ -252,12 +255,19 @@ if __name__ == '__main__':
     # recognize cpatcha code
     baiduOCR = BaiduVerifyCode()
     code = baiduOCR.virify_code()
-    # check code
+    # validate captcha code
     login.checkCode(session_request, code)
     # get sms code
-    login.getSMSCode(session_request, code, '16601126121')
+    login.getSMSCode(session_request, code, phone_num)
     # read sms msg code from db
     sms_code = input("sms code: ")
+    login.login(session_request, phone_num, sms_code)
+    # get registrr info for test
+    str_time = str(int(time.time()) * 1000)
+    url = 'https://www.114yygh.com/web/order/list?_time={}&idCardType=IDENTITY_CARD&idCardNo=320381199003150312&orderStatus=ALL&pageNo=1&pageSize=10'.format(str_time)
+    res = session_request.get(url)
+    with open('text.html', 'w') as f:
+        f.write(res.content.decode('utf-8'))
     exit()
 
     # get department register info

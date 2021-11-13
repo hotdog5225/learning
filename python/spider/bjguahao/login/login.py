@@ -1,9 +1,12 @@
 import json
 import time
 
-from crypt.my_crypto import Encryptor
 
 class Login:
+    def __init__(self, arg_encryptor):
+        # 加密模块
+        self.encryptor = arg_encryptor
+
     # get captcha pic
     def getCptcharCode(self, session):
         url = 'https://www.114yygh.com/web/img/getImgCode?_time={}'.format(str(int(time.time()) * 1000))
@@ -17,7 +20,8 @@ class Login:
         str_time = str(int(time.time()) * 1000)
         url = 'https://www.114yygh.com/web/checkcode?_time={}&code={}'.format(str_time, code)
         response = session.get(url)
-        print(response.content.decode('utf-8'))
+        print(response.request.headers)
+        print(response.headers)
         res_dict = json.loads(response.content.decode('utf-8'))
         if res_dict['resCode'] != 0:
             print(res_dict['msg'])
@@ -38,16 +42,18 @@ class Login:
     def login(self, session, phone_num, sms_code):
         str_time = str(int(time.time()) * 1000)
         url = "https://www.114yygh.com/web/login?_time={}".format(str_time)
-        MyEncrypo = Encryptor()
-        encrypt_phone_num = MyEncrypo.encrypt(phone_num)
-        encrypt_sms_code = MyEncrypo.encrypt(sms_code)
+        encrypt_phone_num = self.encryptor.encrypt(phone_num)
+        encrypt_sms_code = self.encryptor.encrypt(sms_code)
         login_data = {
             "mobile": encrypt_phone_num,
             "code": encrypt_sms_code,
         }
+        print(json.dumps(login_data))
         try:
-            response = session.post(url, data=login_data)
-            if response.status_code != 200:
-                print(response.content.decode('utf-8'))
+            response = session.post(url, data=login_data, verify=False)
+            print("response header:", response.headers)
+            print("request header:", response.request.headers)
+            with open('login_info.html', 'w') as f:
+                f.write(response.content.decode('utf-8'))
         except Exception as e:
             print(e)

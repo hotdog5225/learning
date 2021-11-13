@@ -1,17 +1,22 @@
-import selenium.webdriver as wb
-import http.cookiejar
 import json
 import random
 import time
+from datetime import datetime
 
 from login.login import Login
 from verify_code.verify_code import BaiduVerifyCode
-from message.message import Message
+from register.Register import Register
+from register_Info.order import Order
+from conf.config import PersonConfig
+from conf.config import RegistorInfo
+from crypt.my_crypto import Encryptor
 
 from my_crawler.Crawler import BJGuaHaoCrawler
 
 import requests
+import http.cookiejar
 from requests_html import HTMLSession
+import selenium.webdriver as wb
 
 from bs4 import BeautifulSoup
 import bs4.element
@@ -19,11 +24,6 @@ import bs4.element
 import mysql.connector
 from mysql.connector import Error
 from mysql.connector import connect, Error
-
-from datetime import datetime
-
-from conf.config import PersonConfig
-from conf.config import RegistorInfo
 
 def get_cookie():
     # get cookie manually
@@ -142,7 +142,8 @@ def dump_department_info():
 
 def get_basic_info(hosp_name, dept_second_name):
     hosp_sql = "select name, hosp_id from hospital where name = '{}'".format(hosp_name)
-    dept_sql = "select name, second_name, dept_code_1, dept_code_2 from department where second_name = '{}'".format(dept_second_name)
+    dept_sql = "select name, second_name, dept_code_1, dept_code_2 from department where second_name = '{}'".format(
+        dept_second_name)
     with connect(
             host="localhost",
             user='root',
@@ -228,9 +229,15 @@ if __name__ == '__main__':
     # dump_department_info()
     # exit()
 
+    # dependencies
+    person_info = PersonConfig()  # 配置信息
+    register_info = RegistorInfo()  # 挂号信息
+    encryptor = Encryptor()
+    login = Login(encryptor)  # login
+    baiduOCR = BaiduVerifyCode()  # ocr
+    session_request = get_session()  # requests session
+
     # get basic info
-    person_info = PersonConfig()
-    register_info = RegistorInfo()
     phone_num = person_info.phone_num
 
     hosp_name = '北京大学第三医院'
@@ -240,21 +247,21 @@ if __name__ == '__main__':
     secondDeptCode = basic_info_dict['code2']
     hosCode = basic_info_dict['hosp_id']
     dept_first_name = basic_info_dict['dept_first_name']
-    print("待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
-                                              secondDeptCode))
+    print(
+        "待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
+                                                  secondDeptCode))
 
-    session_request = get_session()
     # set cookie by remote
     url = 'https://www.114yygh.com/web/img/getImgCode?_time={}'.format(str(int(time.time()) * 1000))
     session_request.get(url)
 
     # login
     # get captcha code
-    login = Login()
     login.getCptcharCode(session_request)
     # recognize cpatcha code
-    baiduOCR = BaiduVerifyCode()
-    code = baiduOCR.virify_code()
+    code = baiduOCR.verify_code()
+    while len(code) != 4:
+        code = baiduOCR.verify_code()
     # validate captcha code
     login.checkCode(session_request, code)
     # get sms code
@@ -262,12 +269,11 @@ if __name__ == '__main__':
     # read sms msg code from db
     sms_code = input("sms code: ")
     login.login(session_request, phone_num, sms_code)
-    # get registrr info for test
-    str_time = str(int(time.time()) * 1000)
-    url = 'https://www.114yygh.com/web/order/list?_time={}&idCardType=IDENTITY_CARD&idCardNo=320381199003150312&orderStatus=ALL&pageNo=1&pageSize=10'.format(str_time)
-    res = session_request.get(url)
-    with open('text.html', 'w') as f:
-        f.write(res.content.decode('utf-8'))
+
+    # get register info for login test
+    order_class = Order()
+    order_class.getOrders(session_request, persernal_config=person_info)
+
     exit()
 
     # get department register info

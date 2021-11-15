@@ -6,5 +6,5 @@
 
 // when compile comes to here, it already knows the all member definition of Class Storage. so member can be accessed in the function
 void Display::PrintStoragePrivateMember(const Storage &storage) {
-    std::cout << storage.name << std::endl; // (1) compile need to know all definition of Class Storage ( what members it has)
+    std::cout << storage.m_name << std::endl; // (1) compile need to know all definition of Class Storage ( what members it has)
 }

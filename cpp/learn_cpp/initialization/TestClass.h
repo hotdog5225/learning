@@ -20,23 +20,9 @@ public:
         std::cout << "[user defined Destructor called]" << std::endl;
     };
 
-    // members can not be changed in this const member function
-    // const function can be called both by const & non-const class object
-    std::string get_name() const;
-
-    // const member function can only return const reference to member (if reference is returned)
-    // in this way, the caller can not change the member returned.
-    const std::string &get_const_ref_to_member() const;
-
-    // non-const member function can return reference to member
-    // so the non-const object(caller) can change member's value.
-    std::string &get_ref_to_member() {
-        return m_name;
-    }
-
     // static member function, used to access private static member, with no need to instantiate an object!
     // and static member function can only access other static member/function.
-    static int get_private_staic_member();
+    static int get_private_static_member();
 
     static std::vector<int> static_vec;
 

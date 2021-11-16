@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 function test_func() {
 	echo "numbs of function params: $#" # numbs of params: 4

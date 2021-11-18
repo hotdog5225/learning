@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import time
@@ -39,12 +40,11 @@ if __name__ == '__main__':
     person_info = PersonConfig()  # 配置信息
     register_info = RegistorInfo()  # 挂号信息
 
+    redis = RedisClient().get_client()  # redis
     encryptor = Encryptor()  # 加密模块
     secret_info = Secret()
     baiduOCR = BaiduVerifyCode(secret_info, error_num)  # ocr
-    login = Login(encryptor, error_num, baiduOCR)  # login
-
-    redis = RedisClient().get_client()  # redis
+    login = Login(encryptor, error_num, baiduOCR, redis)  # login
 
     header_info = HeaderInfo()
     cookie_info = CookieInfo()
@@ -63,56 +63,22 @@ if __name__ == '__main__':
         "待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
                                                   secondDeptCode))
 
-    # get image code (for set cookie)
-    str_time = str(int(time.time()) * 1000)
-    url = "https://www.114yygh.com/web/img/getImgCode?_time={}".format(str_time)
-    session_request.get(url)
-    # get department common info (for set cookie)
-    str_time = str(int(time.time()) * 1000)
-    url = "https://www.114yygh.com/web/department/common?_time={}".format(str_time)
-    resp = session_request.get(url)
-    with open('department_common.json', 'w') as f:
-        f.write(resp.content.decode('utf-8'))
-    # get enum (for set cookie)
-    str_time = str(int(time.time()) * 1000)
-    url = 'https://www.114yygh.com/web/common/enum?_time={}'.format(str_time)
-    resp = session_request.post(url, json={
-        "keys": [
-            "HOS_LEVEL",
-            "HOS_AREA"
-        ]
-    })
-    with open('common_enum.json', 'w') as f:
-        f.write(resp.content.decode('utf-8'))
-    # get hospital list (for set cookie)
-    url = 'https://www.114yygh.com/web/hospital/list?'
-    get_param = {
-        '_time': str_time,
-        'keywords': "",
-        'levelId': 0,
-        'areaId': 0,
-        'pageNo': 1,
-        'pageSize': 20
-    }
-    resp = session_request.get(url, params=get_param)
-    with open('hospital_list.json', 'w') as f:
-        f.write(resp.content.decode('utf-8'))
-    # get user info (for set cookie)
-    url = 'https://www.114yygh.com/web/user/info?_time={}'.format(str_time)
-    resp = session_request.get(url, params=get_param)
-
-    # login
+    # login and update cookie
     # get captcha code
     login.get_captcha_code(session_request)
     # recognize cpatcha code
-    code = login.recognize_code()
+    code = login.recognize_code(session_request)
     # validate captcha code
     login.check_code(session_request, code)
-    # # get sms code
-    # login.get_sms_code(session_request, code, person_info.phone_num)
-    # # read sms msg code from db
-    # sms_code = input("sms code: ")
-    # login.login(session_request, phone_num, sms_code)
+    # get sms code
+    try:
+        login.get_sms_code(session_request, code, person_info.phone_num)
+    except Exception as e:
+        print(e)
+
+    # read sms msg code from db
+    sms_code = input("sms code: ")
+    login.login(session_request, person_info.phone_num, sms_code)
 
     # # get register info for login test
     # order_class = Order()

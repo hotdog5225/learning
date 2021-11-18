@@ -1,5 +1,11 @@
 # Q: 图片验证码识别, 触发验证码下发, 获取短信验证码, 登录
 
+# redis-cli
+# https://chartio.com/resources/tutorials/how-to-get-all-keys-in-redis/
+
+# best practise for Exception
+# https://stackoverflow.com/questions/2052390/manually-raising-throwing-an-exception-in-python
+
 # WAF bypass
 # https://github.com/AI0TSec/blog/issues/8#tocbar--1tk0oef
 

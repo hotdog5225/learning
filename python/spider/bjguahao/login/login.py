@@ -2,12 +2,14 @@ import json
 import logging
 import time
 
+
 class Login:
-    def __init__(self, arg_encryptor, error_num, ocr):
+    def __init__(self, arg_encryptor, error_num, ocr, redis):
         # 加密模块
         self.encryptor = arg_encryptor
         self.error_num = error_num
         self.ocr = ocr
+        self.redis = redis
 
     # get captcha pic
     def get_captcha_code(self, session):
@@ -15,20 +17,23 @@ class Login:
         response = session.get(url)
         if response.status_code != 200:
             logging.error("get captcha_code error")
-            return self.error_num.CALL_MODULE_ERROR
+            raise ValueError("get captcha_code error")
         with open('captcha_code.jpg', 'wb') as f:
             f.write(response.content)
             f.flush()
 
     # recognize captcha code
-    def recognize_code(self):
-        code, err_no = self.ocr.recognize_code()
-        if err_no != 0 or len(code) != 4:
+    def recognize_code(self, session):
+        code = ""
+        try:
+            code = self.ocr.recognize_code()
+        except Exception as e:
+            print(e)
+
+        if len(code) != 4:
             time.sleep(0.2)
-            self.get_captcha_code()
-            self.recognize_code()
-        else:
-            return code
+            self.get_captcha_code(session)
+            self.recognize_code(session)
 
         return code
 
@@ -39,12 +44,12 @@ class Login:
         response = session.get(url)
         if response.status_code != 200:
             self.logging.error("check_code failed!")
-            return self.error_num.CALL_MODULE_ERROR
+            raise ValueError("check_code failed!")
 
         res_dict = json.loads(response.content.decode('utf-8'))
         if res_dict['resCode'] != 0:
             logging.error("check_code failed! msg: %s", res_dict['msg'])
-            return self.error_num.CALL_MODULE_ERROR
+            raise ValueError("check_code failed!")
 
         logging.info("validate captcha code ok!")
 
@@ -54,7 +59,10 @@ class Login:
         url = 'https://www.114yygh.com/web/common/verify-code/get?_time={}&mobile={}&smsKey=LOGIN&code={}'.format(
             str_time, phone_num, code)
         try:
-            response = session.get(url)
+            resp = session.get(url)
+            if resp.status_code != 200:
+                logging.error("[login-get_sms_code] failed!")
+                raise ValueError("[login-get_sms_code] failed!")
         except Exception as e:
             print(e)
             exit()
@@ -69,12 +77,19 @@ class Login:
             "mobile": encrypt_phone_num,
             "code": encrypt_sms_code,
         }
-        print(json.dumps(login_data))
         try:
-            response = session.post(url, data=login_data, verify=False)
-            print("response header:", response.headers)
-            print("request header:", response.request.headers)
+            response = session.post(url, json=login_data, verify=False)
+            if response.status_code != 200:
+                logging.error("[login-login] login failed!")
+                raise ValueError("[login-login] login failed!")
             with open('login_info.html', 'w') as f:
                 f.write(response.content.decode('utf-8'))
+
+            # set cookie redis
+            try:
+                self.redis.set('114_login_cookie', json.dumps(session.cookies.get_dict()))
+            except Exception as e:
+                print(e)
+
         except Exception as e:
             print(e)

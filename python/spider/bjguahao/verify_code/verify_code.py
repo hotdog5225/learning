@@ -29,7 +29,6 @@ class BaiduVerifyCode:
             return fp.read()
 
     def recognize_code(self):
-
         path = './captcha_code.jpg'
         image = self.get_file_content(path)
 
@@ -43,14 +42,15 @@ class BaiduVerifyCode:
             result = self.client.webImage(image, options)
         except Exception as e:
             print(e)
-            exit()
 
         if len(result['words_result'][0]['words']) == 0:
             logging.error("OCR failed, empty code")
-            return "", self.error_num.CALL_MODULE_ERROR
+            raise ValueError("OCR failed, empty code")
 
-        print("captcha_code is: ", result['words_result'][0]['words'])
-        return result['words_result'][0]['words'], 0
+        # print("captcha_code is: ", result['words_result'][0]['words'])
+        logging.info("captcha_code is: %s", str(result['words_result'][0]['words']))
+
+        return result['words_result'][0]['words']
 
 
 if __name__ == "__main__":

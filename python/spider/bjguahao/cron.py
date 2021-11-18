@@ -12,11 +12,17 @@ from common.error_no import ErrorNum
 
 
 def validate_cookie():
-    redis = RedisClient().get_client()  # redis
+    logging.basicConfig(filename="log_cookie_validation.txt",
+                        filemode='a',
+                        format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                        datefmt='%H:%M:%S',
+                        level=logging.DEBUG)
+
+    my_redis = RedisClient().get_client()  # redis
 
     str_time = str(int(time.time()) * 1000)
     cookie_key = '114_login_cookie'
-    str_cookie = redis.get(cookie_key)
+    str_cookie = my_redis.get(cookie_key)
 
     cookie_dict = json.loads(str_cookie)
 
@@ -26,15 +32,12 @@ def validate_cookie():
     header_info = HeaderInfo()
     cookie_info = CookieInfo()
     error_num = ErrorNum()
-    session_info = SessionInfo(header_info, cookie_info, redis, error_num)  # session
+    session_info = SessionInfo(header_info, cookie_info, my_redis, error_num)  # session
     session, code = session_info.get_session_with_cookie()
 
     # validate cookie
     url = 'https://www.114yygh.com/web/patient/list?_time={}&showType=USER_CENTER'.format(str_time)
     resp = session.get(url)
-    print(resp.content.decode('utf-8'))
-    with open('test.txt', 'w') as f:
-        f.write(resp.content.decode('utf-8'))
 
     if resp.status_code != 200:
         logging.error("[session_info - validate_cookie] http failed!")

@@ -82,8 +82,6 @@ class Login:
             if response.status_code != 200:
                 logging.error("[login-login] login failed!")
                 raise ValueError("[login-login] login failed!")
-            with open('login_info.html', 'w') as f:
-                f.write(response.content.decode('utf-8'))
 
             # set cookie redis
             try:

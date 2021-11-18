@@ -31,6 +31,8 @@ if __name__ == '__main__':
     # set logging level
     logging.basicConfig(level=logging.INFO)
 
+    # 判断cookie是否有效
+
     # dependencies
     error_num = ErrorNum()
 
@@ -48,8 +50,32 @@ if __name__ == '__main__':
 
     header_info = HeaderInfo()
     cookie_info = CookieInfo()
-    session_info = SessionInfo(header_info, cookie_info)  # session
-    session_request = session_info.getGeneralSession()
+    session_info = SessionInfo(header_info, cookie_info, redis, error_num)  # session
+    session_request, code = session_info.get_session_with_cookie()
+    if code != error_num.OK:
+        # login and update cookie
+        # get captcha code
+        login.get_captcha_code(session_request)
+        # recognize captcha code
+        code = login.recognize_code(session_request)
+        # validate captcha code
+        login.check_code(session_request, code)
+        # get sms code
+        try:
+            login.get_sms_code(session_request, code, person_info.phone_num)
+        except Exception as e:
+            print(e)
+        # read sms msg code from db
+        sms_code = input("输入手机验证码: ")
+        login.login(session_request, person_info.phone_num, sms_code)
+
+        # validate cookie
+        is_valid = session_info.validate_cookie(session_request)
+        if is_valid:
+            logging.info("用户登录成功!")
+        else:
+            logging.error("用户登录失败!")
+            exit()
 
     # print register info
     hosp_name = register_info.hospital_name
@@ -63,22 +89,7 @@ if __name__ == '__main__':
         "待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
                                                   secondDeptCode))
 
-    # login and update cookie
-    # get captcha code
-    login.get_captcha_code(session_request)
-    # recognize cpatcha code
-    code = login.recognize_code(session_request)
-    # validate captcha code
-    login.check_code(session_request, code)
-    # get sms code
-    try:
-        login.get_sms_code(session_request, code, person_info.phone_num)
-    except Exception as e:
-        print(e)
 
-    # read sms msg code from db
-    sms_code = input("sms code: ")
-    login.login(session_request, person_info.phone_num, sms_code)
 
     # # get register info for login test
     # order_class = Order()

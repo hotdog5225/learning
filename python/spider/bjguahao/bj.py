@@ -1,5 +1,11 @@
 # Q: 图片验证码识别, 触发验证码下发, 获取短信验证码, 登录
 
+# schedule
+# https://stackoverflow.com/questions/373335/how-do-i-get-a-cron-like-scheduler-in-python
+
+# requests session add a cookie
+# https://stackoverflow.com/questions/17224054/how-to-add-a-cookie-to-the-cookiejar-in-python-requests-library
+
 # redis-cli
 # https://chartio.com/resources/tutorials/how-to-get-all-keys-in-redis/
 

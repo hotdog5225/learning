@@ -6,4 +6,6 @@ class PersonConfig:
 
 class RegistorInfo:
     def __init__(self):
+        self.hospital_name = '北京大学第三医院'
+        self.dept_second_name = '肛肠门诊'
         pass

@@ -1,3 +1,4 @@
+import logging
 import time
 import random
 import sys
@@ -5,21 +6,21 @@ import sys
 import requests
 from aip import AipOcr
 
-from verify_code.secret import Secret
-
-def get_client():
-    sys.path.append(".")
-    s = Secret()
-    app_id = s.app_id
-    api_key = s.api_key
-    secret_key = s.secret_key
-    return AipOcr(app_id, api_key, secret_key)
-
 
 # https://cloud.baidu.com/doc/OCR/s/7kibizyfm#%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%89%87%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB
 class BaiduVerifyCode:
-    def __init__(self):
-        self.client = get_client()
+    def __init__(self, secret, error_num):
+        self.secret = secret
+        self.client = self.get_client()
+        self.error_num = error_num
+
+    def get_client(self):
+        sys.path.append(".")
+        s = self.secret
+        app_id = s.app_id
+        api_key = s.api_key
+        secret_key = s.secret_key
+        return AipOcr(app_id, api_key, secret_key)
 
     """ 读取图片 """
 
@@ -27,7 +28,7 @@ class BaiduVerifyCode:
         with open(filePath, 'rb') as fp:
             return fp.read()
 
-    def verify_code(self):
+    def recognize_code(self):
 
         path = './captcha_code.jpg'
         image = self.get_file_content(path)
@@ -44,11 +45,15 @@ class BaiduVerifyCode:
             print(e)
             exit()
 
-        print(result['words_result'][0]['words'])
-        return result['words_result'][0]['words']
+        if len(result['words_result'][0]['words']) == 0:
+            logging.error("OCR failed, empty code")
+            return "", self.error_num.CALL_MODULE_ERROR
+
+        print("captcha_code is: ", result['words_result'][0]['words'])
+        return result['words_result'][0]['words'], 0
 
 
 if __name__ == "__main__":
     baiduOCR = BaiduVerifyCode()
-    baiduOCR.verify_code()
+    baiduOCR.recognize_code()
     pass

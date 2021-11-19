@@ -74,3 +74,57 @@
 23:41:46,882 root INFO >>>>>> cookie OK!
 23:41:46,993 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637336506000&showType=USER_CENTER HTTP/1.1" 200 634
 23:41:46,993 root INFO cookie有效!
+23:46:47,38 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+23:46:47,63 root INFO current cookie is: {"cmi-user-ticket": "a55owS3apLm1F61nUIlPLTv1bTEGnElXfkFNgQ..", "imed_session": "kTa9jO0ilMZeHJ9KkrnoA9SX07zfbcWv_5457787", "imed_session_tm": "1637336185993", "agent_login_img_code": "69d6119a8aad42129ee4a3a8ba5d552d", "secure-key": "16f20176-33e0-459b-80dc-0031ccfe018c"}
+23:46:47,63 root INFO >>>>>  setting cookie.....
+23:46:47,64 root INFO >>>>>  validate cookie.....
+23:46:47,66 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+23:46:47,389 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637336807000&showType=USER_CENTER HTTP/1.1" 200 634
+23:46:47,390 root INFO >>>>>> cookie OK!
+23:46:48,66 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637336807000&showType=USER_CENTER HTTP/1.1" 200 634
+23:46:48,67 root INFO cookie有效!
+23:51:49,70 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+23:51:49,101 root INFO current cookie is: {"cmi-user-ticket": "a55owS3apLm1F61nUIlPLTv1bTEGnElXfkFNgQ..", "imed_session": "kTa9jO0ilMZeHJ9KkrnoA9SX07zfbcWv_5457787", "imed_session_tm": "1637336185993", "agent_login_img_code": "69d6119a8aad42129ee4a3a8ba5d552d", "secure-key": "16f20176-33e0-459b-80dc-0031ccfe018c"}
+23:51:49,101 root INFO >>>>>  setting cookie.....
+23:51:49,102 root INFO >>>>>  validate cookie.....
+23:51:49,106 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+23:51:49,740 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637337109000&showType=USER_CENTER HTTP/1.1" 200 634
+23:51:49,741 root INFO >>>>>> cookie OK!
+23:51:49,847 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637337109000&showType=USER_CENTER HTTP/1.1" 200 634
+23:51:49,848 root INFO cookie有效!
+23:56:50,827 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+23:56:50,860 root INFO current cookie is: {"cmi-user-ticket": "a55owS3apLm1F61nUIlPLTv1bTEGnElXfkFNgQ..", "imed_session": "kTa9jO0ilMZeHJ9KkrnoA9SX07zfbcWv_5457787", "imed_session_tm": "1637336185993", "agent_login_img_code": "69d6119a8aad42129ee4a3a8ba5d552d", "secure-key": "16f20176-33e0-459b-80dc-0031ccfe018c"}
+23:56:50,860 root INFO >>>>>  setting cookie.....
+23:56:50,861 root INFO >>>>>  validate cookie.....
+23:56:50,864 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+23:56:51,58 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637337410000&showType=USER_CENTER HTTP/1.1" 200 634
+23:56:51,59 root INFO >>>>>> cookie OK!
+23:56:51,157 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637337410000&showType=USER_CENTER HTTP/1.1" 200 634
+23:56:51,159 root INFO cookie有效!
+00:01:52,121 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+00:01:52,154 root INFO current cookie is: {"cmi-user-ticket": "a55owS3apLm1F61nUIlPLTv1bTEGnElXfkFNgQ..", "imed_session": "kTa9jO0ilMZeHJ9KkrnoA9SX07zfbcWv_5457787", "imed_session_tm": "1637336185993", "agent_login_img_code": "69d6119a8aad42129ee4a3a8ba5d552d", "secure-key": "16f20176-33e0-459b-80dc-0031ccfe018c"}
+00:01:52,154 root INFO >>>>>  setting cookie.....
+00:01:52,155 root INFO >>>>>  validate cookie.....
+00:01:52,158 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+00:01:53,98 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637337712000&showType=USER_CENTER HTTP/1.1" 200 634
+00:01:53,100 root INFO >>>>>> cookie OK!
+00:01:53,270 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637337712000&showType=USER_CENTER HTTP/1.1" 200 634
+00:01:53,271 root INFO cookie有效!
+00:06:54,208 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+00:06:54,225 root INFO current cookie is: {"cmi-user-ticket": "a55owS3apLm1F61nUIlPLTv1bTEGnElXfkFNgQ..", "imed_session": "kTa9jO0ilMZeHJ9KkrnoA9SX07zfbcWv_5457787", "imed_session_tm": "1637336185993", "agent_login_img_code": "69d6119a8aad42129ee4a3a8ba5d552d", "secure-key": "16f20176-33e0-459b-80dc-0031ccfe018c"}
+00:06:54,225 root INFO >>>>>  setting cookie.....
+00:06:54,225 root INFO >>>>>  validate cookie.....
+00:06:54,228 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+00:06:54,544 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637338014000&showType=USER_CENTER HTTP/1.1" 200 634
+00:06:54,545 root INFO >>>>>> cookie OK!
+00:06:54,725 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637338014000&showType=USER_CENTER HTTP/1.1" 200 634
+00:06:54,726 root INFO cookie有效!
+00:11:55,719 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+00:11:55,752 root INFO current cookie is: {"cmi-user-ticket": "a55owS3apLm1F61nUIlPLTv1bTEGnElXfkFNgQ..", "imed_session": "kTa9jO0ilMZeHJ9KkrnoA9SX07zfbcWv_5457787", "imed_session_tm": "1637336185993", "agent_login_img_code": "69d6119a8aad42129ee4a3a8ba5d552d", "secure-key": "16f20176-33e0-459b-80dc-0031ccfe018c"}
+00:11:55,752 root INFO >>>>>  setting cookie.....
+00:11:55,753 root INFO >>>>>  validate cookie.....
+00:11:55,755 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+00:11:55,921 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637338315000&showType=USER_CENTER HTTP/1.1" 200 634
+00:11:55,922 root INFO >>>>>> cookie OK!
+00:11:56,21 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637338315000&showType=USER_CENTER HTTP/1.1" 200 634
+00:11:56,22 root INFO cookie有效!

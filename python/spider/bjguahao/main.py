@@ -98,62 +98,17 @@ if __name__ == '__main__':
         "待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
                                                   secondDeptCode))
 
-    # get dept time list page
-    data_dict = {
-        "firstDeptCode": firstDeptCode,  # 诊室code1
-        "secondDeptCode": secondDeptCode,  # 诊室code2
-        "hosCode": hosCode,  # 医院编号
-        "week": 1
-    }
-    str_time = str(int(time.time()) * 1000 + 367)
-    url = 'https://www.114yygh.com/web/product/list?_time=' + str_time
-    response = session_request.post(url, json=data_dict)
-    with open('dept_time_list.json', 'w') as f:
-        f.write(response.content.decode('utf-8'))
-    try:
-        resp_data_dict = response.json()
-        if resp_data_dict['resCode'] != 0:
-            print(resp_data_dict['msg'])
-            exit()
-    except Exception as e:
-        print(e)
-        exit()
+    register = Register(
+        firstDeptCode=firstDeptCode,
+        secondDeptCode=secondDeptCode,
+        hosCode=hosCode,
+        session=session_request,
+    )
+    availabel_days = register.get_availabe_days()
+    if len(availabel_days) == 0:
+        logging.warning("\n>>>>>>> 当前没有可预约日期")
+
 
     exit()
 
-    calendars = resp_data_dict['data']['calendars']
-    next_appoint_time = datetime.fromtimestamp(resp_data_dict['data']['fhTimestamp'] / 1000)
-    next_appoint_time_formated = datetime.strptime(str(next_appoint_time), '%Y-%m-%d %H:%M:%S')
-    print('下次放号时间: {}'.format(next_appoint_time_formated))
 
-    exit()
-
-    # check which day is available
-    target = ''
-    for singleday in calendars:
-        status = singleday['status']
-        # AVAILABLE: 有号
-        # SOLD_OUT: 约满
-        # NO_INVENTORY: 无号
-        # TOMORROW_OPEN: 即将放号
-        if status == 'AVAILABLE':
-            target = singleday['dutyDate']  # 2021-11-11
-            week_desc = singleday['weekDesc']  # 周日
-            print('{}({})is available'.format(singleday['weekDesc'], singleday['dutyDate']))
-            exit
-
-            # TODO choose which day to appoint
-
-            # appoint specific target day
-            # page is rendered by javascript, use selenium
-            url = "https://www.114yygh.com/hospital/{}/{}/{}/source".format(hosCode, firstDeptCode, secondDeptCode)
-            bjGuaHaoCrawler = BJGuaHaoCrawler()
-            dept_detail_html = bjGuaHaoCrawler.get_html_dept_detail(url, week_desc)
-
-            # parse html
-            soup = BeautifulSoup(dept_detail_html, "lxml")
-            morning_num_remain_tag = soup.find('span', attrs={
-                'style': 'font_decrypt-family: magic_1;',
-            })
-            print(repr(morning_num_remain_tag.string))
-            exit()

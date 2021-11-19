@@ -6,11 +6,11 @@ from datetime import datetime
 import logging
 
 import requests
+import schedule
 
 from login.login import Login
 from verify_code.verify_code import BaiduVerifyCode
-from register.Register import Register
-from register_Info.order import Order
+from register.register import Register
 from conf.config import PersonConfig
 from conf.config import RegistorInfo
 from crypt.my_crypto import Encryptor
@@ -22,6 +22,7 @@ from request_info.session_info import SessionInfo
 from common.error_no import ErrorNum
 from verify_code.secret import Secret
 from font_decrypt.font_decrypt import FontDecryptor
+from do.department_info import DepartmentInfo
 
 from my_crawler.Crawler import BJGuaHaoCrawler
 
@@ -29,6 +30,37 @@ from bs4 import BeautifulSoup
 import bs4.element
 
 from storage.redis import RedisClient
+
+
+def say(arg):
+    print("hello", arg)
+
+
+def register_fun(register, person_info):
+    availabel_days = register.get_availabe_days()
+    totla_count = 1000
+    while totla_count > 0 and len(availabel_days) == 0:
+        logging.warning(">>>>>>> 当前没有可预约日期")
+        time.sleep(0.1)
+        availabel_days = register.get_availabe_days()
+        totla_count -= 1
+    if totla_count == 0:
+        exit()
+
+    target_day_list = []
+    for day_info in availabel_days:
+        target_day_list.append(day_info['dutyDate'])
+
+    target_day = person_info.target_day
+    if target_day not in target_day_list:
+        target_day = target_day_list[-1]
+
+    logging.info(">>>>>>>>>> 准备抢{}的挂号".format(target_day))
+
+    register.get_specific_day_info(target_day)
+    order_no = register.comfirm_order_info(target_day)
+    register.get_order_detail()
+
 
 if __name__ == '__main__':
     # set logging level
@@ -98,17 +130,43 @@ if __name__ == '__main__':
         "待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
                                                   secondDeptCode))
 
-    register = Register(
+    register_object = Register(
         firstDeptCode=firstDeptCode,
         secondDeptCode=secondDeptCode,
         hosCode=hosCode,
         session=session_request,
+        font_decrypter=font_decryptor,
+        person_info=person_info,
     )
-    availabel_days = register.get_availabe_days()
-    if len(availabel_days) == 0:
-        logging.warning("\n>>>>>>> 当前没有可预约日期")
 
+    # # TODO comment
+    # # query which department can be registered
+    # hosCode = "12"
+    # db_dept = DepartmentInfo()
+    # dept_list = db_dept.get_all_dept_info_by_hosp_id(hosCode)
+    # # 循环查询,直到有可挂号日期
+    # for dept in dept_list:
+    #     firstDeptCode = dept[4]
+    #     secondDeptCode = dept[5]
+    #     register = Register(
+    #         firstDeptCode=firstDeptCode,
+    #         secondDeptCode=secondDeptCode,
+    #         hosCode=hosCode,
+    #         session=session_request,
+    #         font_decrypter=font_decryptor,
+    #         person_info=person_info,
+    #     )
+    #     availabel_days = register.get_availabe_days()
+    #     if len(availabel_days) != 0:
+    #         if firstDeptCode == 'fd4cf8ebb5326d5466581f3bf6dcb079':
+    #             continue
+    #         print(dept)
+    #         print(availabel_days)
+    #         break
+    #     time.sleep(1)
 
-    exit()
+    schedule.every().day.at("08:29:59").do(register_fun, register=register_object, person_info=person_info)
 
-
+    while True:
+        schedule.run_pending()
+        time.sleep(0.1)

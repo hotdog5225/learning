@@ -46,9 +46,6 @@ class Login:
             self.logging.error("check_code failed!")
             raise ValueError("check_code failed!")
 
-        with open("test.txt", "w") as f:
-            f.write(response.content.decode('utf-8'))
-
         res_dict = json.loads(response.content.decode('utf-8'))
         if res_dict['resCode'] != 0:
             logging.error("check_code failed! msg: %s", res_dict['msg'])

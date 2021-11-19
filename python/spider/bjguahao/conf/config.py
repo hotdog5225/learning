@@ -2,6 +2,8 @@ class PersonConfig:
     def __init__(self):
         self.phone_num = "16601126121"
         self.id_card = '320381199003150312'
+        self.target_day = '2021-11-28'
+        self.social_card_no = "12074208401X"
 
 
 class RegistorInfo:

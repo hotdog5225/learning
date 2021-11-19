@@ -56,10 +56,11 @@ class FontDecryptor:
 
         # 切分str_code
         str_code_list = [item.strip() for item in ori_str_code.strip().split(';')[:-1]]
+        str_code_list = [item.replace(r'&#','0') for item in str_code_list]
 
         decrypt_str_code = ""
         for str_code in str_code_list:
-            decrypt_str_code += font_map[int(str_code.replace(r'&#', '0'), 16)]
+            decrypt_str_code += font_map[str_code]
 
         return decrypt_str_code
 

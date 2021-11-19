@@ -54,11 +54,11 @@ if __name__ == '__main__':
     header_info = HeaderInfo()
     cookie_info = CookieInfo()
     session_info = SessionInfo(header_info, cookie_info, redis, error_num)  # session
-    # session_request, code = session_info.get_session_with_cookie()
+    session_request, code = session_info.get_session_with_cookie()
 
-    font_decryptor = FontDecryptor()
-    font_decryptor.get_code("//img.114yygh.com/fe/home/iconfont/c4ca4238a0b923820dcc509a6f75849b","&#xf315;&#xf120;")
-    exit()
+    # font 解密
+    font_decryptor = FontDecryptor(redis)
+    # code = font_decryptor.get_code("//img.114yygh.com/fe/home/iconfont/c81e728d9d4c2f636f067f89cc14862c","&#xf594;&#xf62b;")
 
     if code != error_num.OK:
         # login and update cookie
@@ -98,16 +98,6 @@ if __name__ == '__main__':
         "待挂科室基础信息: {}({}), {}({}), {}({})".format(hosp_name, hosCode, dept_first_name, firstDeptCode, dept_second_name,
                                                   secondDeptCode))
 
-
-
-    # # get register info for login test
-    # order_class = Order()
-    # order_class.getOrders(session_request, persernal_config=person_info)
-    # exit()
-
-    print(session_request.cookies.get_dict())
-    exit()
-
     # get dept time list page
     data_dict = {
         "firstDeptCode": firstDeptCode,  # 诊室code1
@@ -115,9 +105,10 @@ if __name__ == '__main__':
         "hosCode": hosCode,  # 医院编号
         "week": 1
     }
+    str_time = str(int(time.time()) * 1000 + 367)
     url = 'https://www.114yygh.com/web/product/list?_time=' + str_time
-    response = session_request.post(url, data=data_dict)
-    with open('dept_time_list.html', 'w') as f:
+    response = session_request.post(url, json=data_dict)
+    with open('dept_time_list.json', 'w') as f:
         f.write(response.content.decode('utf-8'))
     try:
         resp_data_dict = response.json()
@@ -127,6 +118,7 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
         exit()
+
     exit()
 
     calendars = resp_data_dict['data']['calendars']

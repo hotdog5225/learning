@@ -1,4 +1,13 @@
-# Q: 图片验证码识别, 触发验证码下发, 获取短信验证码, 登录
+
+# TTFONT
+# https://www.programcreek.com/python/example/92803/fontTools.ttLib.TTFont
+# https://github.com/xiaosimao/wx_code/tree/master/58font
+
+# 反扒技术
+# https://www.cxymm.net/article/freeking101/81778019
+
+# logging to file
+# https://stackoverflow.com/questions/6386698/how-to-write-to-a-file-using-the-logging-python-module
 
 # schedule
 # https://stackoverflow.com/questions/373335/how-do-i-get-a-cron-like-scheduler-in-python

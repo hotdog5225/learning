@@ -50,7 +50,7 @@ def validate_cookie():
 
 
 if __name__ == '__main__':
-    schedule.every(2).minutes.do(validate_cookie)
+    schedule.every(5).minutes.do(validate_cookie)
 
     while True:
         schedule.run_pending()

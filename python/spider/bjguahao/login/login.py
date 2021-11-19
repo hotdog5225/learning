@@ -31,7 +31,7 @@ class Login:
             print(e)
 
         if len(code) != 4:
-            time.sleep(0.2)
+            time.sleep(2)
             self.get_captcha_code(session)
             self.recognize_code(session)
 
@@ -39,12 +39,15 @@ class Login:
 
     # validate captcha pic
     def check_code(self, session, code):
-        str_time = str(int(time.time()) * 1000)
+        str_time = str(int(time.time()) * 1000 + 2000)
         url = 'https://www.114yygh.com/web/checkcode?_time={}&code={}'.format(str_time, code)
         response = session.get(url)
         if response.status_code != 200:
             self.logging.error("check_code failed!")
             raise ValueError("check_code failed!")
+
+        with open("test.txt", "w") as f:
+            f.write(response.content.decode('utf-8'))
 
         res_dict = json.loads(response.content.decode('utf-8'))
         if res_dict['resCode'] != 0:

@@ -2,7 +2,7 @@ import random
 
 
 class HeaderInfo:
-    def getGeneralHeader(self):
+    def get_common_header(self):
         headers = {
             'Connection': 'keep-alive',
             'sec-ch-ua': '"Chromium";v="92", " Not A;Brand";v="99", "Google Chrome";v="92"',

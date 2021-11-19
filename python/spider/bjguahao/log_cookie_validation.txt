@@ -1,0 +1,68 @@
+20:36:48,945 root INFO current cookie is: {"BMAP_SECKEY": "68929e83979a78fd015ed358fefc384ad77c1b324b8cc6f266f2a8ebe521879133a4ab1c7df9cb3c91dfbc5248943b06f8c7b7cc20a008330338202950984db93c6852080a710ea0d08a93346b9c9c52165a6912f3345de65fe7563a8123b57548c033076d5704b3bf186cfcfe38c61000316cb42e5e01e38cc15b2654b9c8bc67ca446d20b41da912d28d3f39e7749766cb434655f1e4436b0f0d74cd7ad373311dd992856d6159de3fd4c36d7b1d50d588490e1ed9a7c41a845eb1ccfd6bc53933ef6efceaf5065e0455a9c10a73fbf323c56d67d134682fa368dc40a1a9ec", "SECKEY_CID": "1478bcca6dc2dc6a18b6bbf53dd262c81e191d9b", "__jsluid_s": "dabfd1d9f43e257e39dd26d63435425c", "cmi-user-ticket": "A_Fp82FfvOqYmB_hJiR5arUoTUXkHKkzyawQoA..", "imed_session": "MiCVfaDvjtZV0sVrOTVYwqs7W75UMNih_5457455", "imed_session_tm": "1637236793835", "agent_login_img_code": "b3ab25d2ff904ddb8f88721ba48b43dd", "secure-key": "f45e0639-5019-41e1-8fe8-0aea8113f332"}
+20:36:48,945 root INFO current cookie is: {"BMAP_SECKEY": "68929e83979a78fd015ed358fefc384ad77c1b324b8cc6f266f2a8ebe521879133a4ab1c7df9cb3c91dfbc5248943b06f8c7b7cc20a008330338202950984db93c6852080a710ea0d08a93346b9c9c52165a6912f3345de65fe7563a8123b57548c033076d5704b3bf186cfcfe38c61000316cb42e5e01e38cc15b2654b9c8bc67ca446d20b41da912d28d3f39e7749766cb434655f1e4436b0f0d74cd7ad373311dd992856d6159de3fd4c36d7b1d50d588490e1ed9a7c41a845eb1ccfd6bc53933ef6efceaf5065e0455a9c10a73fbf323c56d67d134682fa368dc40a1a9ec", "SECKEY_CID": "1478bcca6dc2dc6a18b6bbf53dd262c81e191d9b", "__jsluid_s": "dabfd1d9f43e257e39dd26d63435425c", "cmi-user-ticket": "A_Fp82FfvOqYmB_hJiR5arUoTUXkHKkzyawQoA..", "imed_session": "MiCVfaDvjtZV0sVrOTVYwqs7W75UMNih_5457455", "imed_session_tm": "1637236793835", "agent_login_img_code": "b3ab25d2ff904ddb8f88721ba48b43dd", "secure-key": "f45e0639-5019-41e1-8fe8-0aea8113f332"}
+20:36:48,952 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+20:36:49,151 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637239008000&showType=USER_CENTER HTTP/1.1" 200 634
+20:36:49,261 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637239008000&showType=USER_CENTER HTTP/1.1" 200 634
+20:36:49,261 root INFO cookie有效!
+20:39:37,914 schedule DEBUG Running job Job(interval=2, unit=minutes, do=validate_cookie, args=(), kwargs={})
+20:39:37,980 root INFO current cookie is: {"BMAP_SECKEY": "68929e83979a78fd015ed358fefc384ad77c1b324b8cc6f266f2a8ebe521879133a4ab1c7df9cb3c91dfbc5248943b06f8c7b7cc20a008330338202950984db93c6852080a710ea0d08a93346b9c9c52165a6912f3345de65fe7563a8123b57548c033076d5704b3bf186cfcfe38c61000316cb42e5e01e38cc15b2654b9c8bc67ca446d20b41da912d28d3f39e7749766cb434655f1e4436b0f0d74cd7ad373311dd992856d6159de3fd4c36d7b1d50d588490e1ed9a7c41a845eb1ccfd6bc53933ef6efceaf5065e0455a9c10a73fbf323c56d67d134682fa368dc40a1a9ec", "SECKEY_CID": "1478bcca6dc2dc6a18b6bbf53dd262c81e191d9b", "__jsluid_s": "dabfd1d9f43e257e39dd26d63435425c", "cmi-user-ticket": "A_Fp82FfvOqYmB_hJiR5arUoTUXkHKkzyawQoA..", "imed_session": "MiCVfaDvjtZV0sVrOTVYwqs7W75UMNih_5457455", "imed_session_tm": "1637236793835", "agent_login_img_code": "b3ab25d2ff904ddb8f88721ba48b43dd", "secure-key": "f45e0639-5019-41e1-8fe8-0aea8113f332"}
+20:39:37,981 root INFO current cookie is: {"BMAP_SECKEY": "68929e83979a78fd015ed358fefc384ad77c1b324b8cc6f266f2a8ebe521879133a4ab1c7df9cb3c91dfbc5248943b06f8c7b7cc20a008330338202950984db93c6852080a710ea0d08a93346b9c9c52165a6912f3345de65fe7563a8123b57548c033076d5704b3bf186cfcfe38c61000316cb42e5e01e38cc15b2654b9c8bc67ca446d20b41da912d28d3f39e7749766cb434655f1e4436b0f0d74cd7ad373311dd992856d6159de3fd4c36d7b1d50d588490e1ed9a7c41a845eb1ccfd6bc53933ef6efceaf5065e0455a9c10a73fbf323c56d67d134682fa368dc40a1a9ec", "SECKEY_CID": "1478bcca6dc2dc6a18b6bbf53dd262c81e191d9b", "__jsluid_s": "dabfd1d9f43e257e39dd26d63435425c", "cmi-user-ticket": "A_Fp82FfvOqYmB_hJiR5arUoTUXkHKkzyawQoA..", "imed_session": "MiCVfaDvjtZV0sVrOTVYwqs7W75UMNih_5457455", "imed_session_tm": "1637236793835", "agent_login_img_code": "b3ab25d2ff904ddb8f88721ba48b43dd", "secure-key": "f45e0639-5019-41e1-8fe8-0aea8113f332"}
+20:39:37,983 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+20:39:39,331 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637239177000&showType=USER_CENTER HTTP/1.1" 200 634
+20:39:39,518 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637239177000&showType=USER_CENTER HTTP/1.1" 200 634
+20:39:39,519 root INFO cookie有效!
+20:46:49,837 root INFO current cookie is: {"BMAP_SECKEY": "68929e83979a78fd015ed358fefc384ad77c1b324b8cc6f266f2a8ebe521879133a4ab1c7df9cb3c91dfbc5248943b06f8c7b7cc20a008330338202950984db93c6852080a710ea0d08a93346b9c9c52165a6912f3345de65fe7563a8123b57548c033076d5704b3bf186cfcfe38c61000316cb42e5e01e38cc15b2654b9c8bc67ca446d20b41da912d28d3f39e7749766cb434655f1e4436b0f0d74cd7ad373311dd992856d6159de3fd4c36d7b1d50d588490e1ed9a7c41a845eb1ccfd6bc53933ef6efceaf5065e0455a9c10a73fbf323c56d67d134682fa368dc40a1a9ec", "SECKEY_CID": "1478bcca6dc2dc6a18b6bbf53dd262c81e191d9b", "__jsluid_s": "dabfd1d9f43e257e39dd26d63435425c", "cmi-user-ticket": "A_Fp82FfvOqYmB_hJiR5arUoTUXkHKkzyawQoA..", "imed_session": "MiCVfaDvjtZV0sVrOTVYwqs7W75UMNih_5457455", "imed_session_tm": "1637236793835", "agent_login_img_code": "b3ab25d2ff904ddb8f88721ba48b43dd", "secure-key": "f45e0639-5019-41e1-8fe8-0aea8113f332"}
+20:46:49,838 root INFO current cookie is: {"BMAP_SECKEY": "68929e83979a78fd015ed358fefc384ad77c1b324b8cc6f266f2a8ebe521879133a4ab1c7df9cb3c91dfbc5248943b06f8c7b7cc20a008330338202950984db93c6852080a710ea0d08a93346b9c9c52165a6912f3345de65fe7563a8123b57548c033076d5704b3bf186cfcfe38c61000316cb42e5e01e38cc15b2654b9c8bc67ca446d20b41da912d28d3f39e7749766cb434655f1e4436b0f0d74cd7ad373311dd992856d6159de3fd4c36d7b1d50d588490e1ed9a7c41a845eb1ccfd6bc53933ef6efceaf5065e0455a9c10a73fbf323c56d67d134682fa368dc40a1a9ec", "SECKEY_CID": "1478bcca6dc2dc6a18b6bbf53dd262c81e191d9b", "__jsluid_s": "dabfd1d9f43e257e39dd26d63435425c", "cmi-user-ticket": "A_Fp82FfvOqYmB_hJiR5arUoTUXkHKkzyawQoA..", "imed_session": "MiCVfaDvjtZV0sVrOTVYwqs7W75UMNih_5457455", "imed_session_tm": "1637236793835", "agent_login_img_code": "b3ab25d2ff904ddb8f88721ba48b43dd", "secure-key": "f45e0639-5019-41e1-8fe8-0aea8113f332"}
+20:46:49,849 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+20:46:51,199 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637239609000&showType=USER_CENTER HTTP/1.1" 200 634
+20:46:51,383 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637239609000&showType=USER_CENTER HTTP/1.1" 200 634
+20:46:51,384 root INFO cookie有效!
+08:44:00,98 root INFO current cookie is: {"cmi-user-ticket": "5nb7Duvh6ryos1Re6l4nKlFQgUoJ5csP4bVmXQ..", "imed_session": "kPjGMGQH0BISjJqzmrhF3wQFtF1m2Bil_5457607", "imed_session_tm": "1637282321628", "agent_login_img_code": "790c21dac7054fccafb99b70caef01c4", "secure-key": "d846dbef-a48b-4f85-a8bf-f0d7ab6b0fa0"}
+08:44:00,98 root INFO >>>>>  setting cookie.....
+08:44:00,99 root INFO >>>>>  validate cookie.....
+08:44:00,108 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+08:44:00,307 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637282640000&showType=USER_CENTER HTTP/1.1" 200 634
+08:44:00,307 root INFO >>>>>> cookie OK!
+08:44:00,421 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637282640000&showType=USER_CENTER HTTP/1.1" 200 634
+08:44:00,422 root INFO cookie有效!
+08:49:01,204 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+08:49:01,238 root INFO current cookie is: {"cmi-user-ticket": "5nb7Duvh6ryos1Re6l4nKlFQgUoJ5csP4bVmXQ..", "imed_session": "kPjGMGQH0BISjJqzmrhF3wQFtF1m2Bil_5457607", "imed_session_tm": "1637282321628", "agent_login_img_code": "790c21dac7054fccafb99b70caef01c4", "secure-key": "d846dbef-a48b-4f85-a8bf-f0d7ab6b0fa0"}
+08:49:01,238 root INFO >>>>>  setting cookie.....
+08:49:01,239 root INFO >>>>>  validate cookie.....
+08:49:01,241 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+08:49:01,415 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637282941000&showType=USER_CENTER HTTP/1.1" 200 634
+08:49:01,416 root INFO >>>>>> cookie OK!
+08:49:01,511 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637282941000&showType=USER_CENTER HTTP/1.1" 200 634
+08:49:01,512 root INFO cookie有效!
+08:54:02,310 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+08:54:02,331 root INFO current cookie is: {"cmi-user-ticket": "5nb7Duvh6ryos1Re6l4nKlFQgUoJ5csP4bVmXQ..", "imed_session": "kPjGMGQH0BISjJqzmrhF3wQFtF1m2Bil_5457607", "imed_session_tm": "1637282321628", "agent_login_img_code": "790c21dac7054fccafb99b70caef01c4", "secure-key": "d846dbef-a48b-4f85-a8bf-f0d7ab6b0fa0"}
+08:54:02,331 root INFO >>>>>  setting cookie.....
+08:54:02,332 root INFO >>>>>  validate cookie.....
+08:54:02,335 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+08:54:02,549 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637283242000&showType=USER_CENTER HTTP/1.1" 200 634
+08:54:02,549 root INFO >>>>>> cookie OK!
+08:54:02,655 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637283242000&showType=USER_CENTER HTTP/1.1" 200 634
+08:54:02,656 root INFO cookie有效!
+08:59:03,432 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+08:59:03,450 root INFO current cookie is: {"cmi-user-ticket": "5nb7Duvh6ryos1Re6l4nKlFQgUoJ5csP4bVmXQ..", "imed_session": "kPjGMGQH0BISjJqzmrhF3wQFtF1m2Bil_5457607", "imed_session_tm": "1637282321628", "agent_login_img_code": "790c21dac7054fccafb99b70caef01c4", "secure-key": "d846dbef-a48b-4f85-a8bf-f0d7ab6b0fa0"}
+08:59:03,450 root INFO >>>>>  setting cookie.....
+08:59:03,450 root INFO >>>>>  validate cookie.....
+08:59:03,453 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+08:59:03,784 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637283543000&showType=USER_CENTER HTTP/1.1" 200 634
+08:59:03,785 root INFO >>>>>> cookie OK!
+08:59:04,12 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637283543000&showType=USER_CENTER HTTP/1.1" 200 634
+08:59:04,13 root INFO cookie有效!
+09:04:04,788 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+09:04:04,803 root INFO current cookie is: {"cmi-user-ticket": "5nb7Duvh6ryos1Re6l4nKlFQgUoJ5csP4bVmXQ..", "imed_session": "kPjGMGQH0BISjJqzmrhF3wQFtF1m2Bil_5457607", "imed_session_tm": "1637282321628", "agent_login_img_code": "790c21dac7054fccafb99b70caef01c4", "secure-key": "d846dbef-a48b-4f85-a8bf-f0d7ab6b0fa0"}
+09:04:04,804 root INFO >>>>>  setting cookie.....
+09:04:04,804 root INFO >>>>>  validate cookie.....
+09:04:04,807 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443
+09:04:05,2 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637283844000&showType=USER_CENTER HTTP/1.1" 200 634
+09:04:05,4 root INFO >>>>>> cookie OK!
+09:04:05,156 urllib3.connectionpool DEBUG https://www.114yygh.com:443 "GET /web/patient/list?_time=1637283844000&showType=USER_CENTER HTTP/1.1" 200 634
+09:04:05,157 root INFO cookie有效!
+09:09:05,918 schedule DEBUG Running job Job(interval=5, unit=minutes, do=validate_cookie, args=(), kwargs={})
+09:09:05,948 root INFO current cookie is: {"cmi-user-ticket": "5nb7Duvh6ryos1Re6l4nKlFQgUoJ5csP4bVmXQ..", "imed_session": "kPjGMGQH0BISjJqzmrhF3wQFtF1m2Bil_5457607", "imed_session_tm": "1637282321628", "agent_login_img_code": "790c21dac7054fccafb99b70caef01c4", "secure-key": "d846dbef-a48b-4f85-a8bf-f0d7ab6b0fa0"}
+09:09:05,948 root INFO >>>>>  setting cookie.....
+09:09:05,948 root INFO >>>>>  validate cookie.....
+09:09:05,951 urllib3.connectionpool DEBUG Starting new HTTPS connection (1): www.114yygh.com:443

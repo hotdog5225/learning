@@ -50,9 +50,9 @@ class Register:
         if resp_data_dict['resCode'] != 0:
             logging.error("[Register-get_available_days] failed, msg:{}".format(resp_data_dict['msg']))
             raise ValueError(resp_data_dict['msg'])
-        # next_appoint_time = datetime.fromtimestamp(resp_data_dict['data']['fhTimestamp'] / 1000)
-        # next_appoint_time_formatted = datetime.strptime(str(next_appoint_time), '%Y-%m-%d %H:%M')
-        # print('下次放号时间: {}'.format(next_appoint_time_formatted))
+        next_appoint_time = datetime.fromtimestamp(int(resp_data_dict['data']['fhTimestamp'] / 1000))
+        next_appoint_time_formatted = datetime.strptime(str(next_appoint_time), '%Y-%m-%d %H:%M:%S')
+        print('下次放号时间: {}'.format(next_appoint_time_formatted))
 
         # get available days
         available_days = []

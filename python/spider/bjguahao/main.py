@@ -1,5 +1,6 @@
 import time
 import logging
+import schedule
 
 from login.login import Login
 from verify_code.verify_code import BaiduVerifyCode
@@ -25,10 +26,10 @@ def say(arg):
 
 def register_fun(register, person_info):
     available_days = register.get_availabe_days()
-    totla_count = 4
+    totla_count = 10
     while totla_count > 0 and len(available_days) == 0:
         logging.warning(">>>>>>> 当前没有可预约日期")
-        time.sleep(0.1)
+        time.sleep(0.5)
         available_days = register.get_availabe_days()
         totla_count -= 1
     if totla_count == 0:
@@ -152,10 +153,9 @@ if __name__ == '__main__':
     #         break
     #     time.sleep(1)
 
-    register_fun(register_object, person_info)
-    #
-    # schedule.every().day.at("08:30:00").do(register_fun, register=register_object, person_info=person_info)
-    #
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(0.1)
+    schedule.every().day.at("08:30:00").do(register_fun, register=register_object, person_info=person_info)
+    schedule.every().day.at("16:00:00").do(register_fun, register=register_object, person_info=person_info)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(0.1)

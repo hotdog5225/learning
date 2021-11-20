@@ -44,15 +44,15 @@ class Register:
         if response.status_code != 200:
             logging.error("[Register-get_available_days] http failed!")
             raise ValueError("[Register-get_available_days] http failed!")
-        # with open('dept_time_list.json', 'w') as f:
-        #     f.write(response.content.decode('utf-8'))
+        with open('dept_time_list.json', 'w') as f:
+            f.write(response.content.decode('utf-8'))
         resp_data_dict = response.json()
         if resp_data_dict['resCode'] != 0:
             logging.error("[Register-get_available_days] failed, msg:{}".format(resp_data_dict['msg']))
             raise ValueError(resp_data_dict['msg'])
-        next_appoint_time = datetime.fromtimestamp(resp_data_dict['data']['fhTimestamp'] / 1000)
-        next_appoint_time_formatted = datetime.strptime(str(next_appoint_time), '%Y-%m-%d %H:%M:%S')
-        print('下次放号时间: {}'.format(next_appoint_time_formatted))
+        # next_appoint_time = datetime.fromtimestamp(resp_data_dict['data']['fhTimestamp'] / 1000)
+        # next_appoint_time_formatted = datetime.strptime(str(next_appoint_time), '%Y-%m-%d %H:%M')
+        # print('下次放号时间: {}'.format(next_appoint_time_formatted))
 
         # get available days
         available_days = []

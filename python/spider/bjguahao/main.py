@@ -1,12 +1,5 @@
-import json
-import logging
-import os
 import time
-from datetime import datetime
 import logging
-
-import requests
-import schedule
 
 from login.login import Login
 from verify_code.verify_code import BaiduVerifyCode
@@ -15,7 +8,6 @@ from conf.config import PersonConfig
 from conf.config import RegistorInfo
 from crypt.my_crypto import Encryptor
 from do.hospital_info import HospitalInfo
-from do.department_info import DepartmentInfo
 from request_info.header_info import HeaderInfo
 from request_info.cookie_info import CookieInfo
 from request_info.session_info import SessionInfo
@@ -23,11 +15,6 @@ from common.error_no import ErrorNum
 from verify_code.secret import Secret
 from font_decrypt.font_decrypt import FontDecryptor
 from do.department_info import DepartmentInfo
-
-from my_crawler.Crawler import BJGuaHaoCrawler
-
-from bs4 import BeautifulSoup
-import bs4.element
 
 from storage.redis import RedisClient
 
@@ -37,18 +24,18 @@ def say(arg):
 
 
 def register_fun(register, person_info):
-    availabel_days = register.get_availabe_days()
-    totla_count = 1000
-    while totla_count > 0 and len(availabel_days) == 0:
+    available_days = register.get_availabe_days()
+    totla_count = 4
+    while totla_count > 0 and len(available_days) == 0:
         logging.warning(">>>>>>> 当前没有可预约日期")
         time.sleep(0.1)
-        availabel_days = register.get_availabe_days()
+        available_days = register.get_availabe_days()
         totla_count -= 1
     if totla_count == 0:
         exit()
 
     target_day_list = []
-    for day_info in availabel_days:
+    for day_info in available_days:
         target_day_list.append(day_info['dutyDate'])
 
     target_day = person_info.target_day
@@ -165,8 +152,10 @@ if __name__ == '__main__':
     #         break
     #     time.sleep(1)
 
-    schedule.every().day.at("08:29:59").do(register_fun, register=register_object, person_info=person_info)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(0.1)
+    register_fun(register_object, person_info)
+    #
+    # schedule.every().day.at("08:30:00").do(register_fun, register=register_object, person_info=person_info)
+    #
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(0.1)

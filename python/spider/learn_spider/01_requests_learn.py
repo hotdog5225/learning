@@ -106,6 +106,8 @@ code = response_get.status_code
 # 4. 请求的cookie
 request_cookie = response_get.request._cookies
 print(request_cookie)
+# or
+session.cookies.get_dict()
 
 # 5. 响应的cookie
 response_cookie = response_get.cookies

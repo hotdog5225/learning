@@ -1,6 +1,7 @@
 import json
 import logging
 import time
+import re
 
 
 class Login:
@@ -30,7 +31,7 @@ class Login:
         except Exception as e:
             print(e)
 
-        if len(code) != 4:
+        if len(code) != 4 or (not re.search('\d{4}', code)):
             time.sleep(2)
             self.get_captcha_code(session)
             self.recognize_code(session)
@@ -48,8 +49,8 @@ class Login:
 
         res_dict = json.loads(response.content.decode('utf-8'))
         if res_dict['resCode'] != 0:
-            logging.error("check_code failed! msg: %s", res_dict['msg'])
-            raise ValueError("check_code failed!")
+            logging.error("[login-check_code] failed! msg: {}".format(res_dict['msg']))
+            raise ValueError("[login-check_code] failed! msg: {}".format(res_dict['msg']))
 
         logging.info("validate captcha code ok!")
 
@@ -58,14 +59,14 @@ class Login:
         str_time = str(int(time.time()) * 1000)
         url = 'https://www.114yygh.com/web/common/verify-code/get?_time={}&mobile={}&smsKey=LOGIN&code={}'.format(
             str_time, phone_num, code)
-        try:
-            resp = session.get(url)
-            if resp.status_code != 200:
-                logging.error("[login-get_sms_code] failed!")
-                raise ValueError("[login-get_sms_code] failed!")
-        except Exception as e:
-            print(e)
-            exit()
+        resp = session.get(url)
+        if resp.status_code != 200:
+            logging.error("[login-get_sms_code] failed!")
+            raise ValueError("[login-get_sms_code] failed!")
+        resp_dict = resp.json()
+        if resp_dict['resCode'] != 0:
+            logging.error("[login-get_sms_code] faild, msg is {}".format(resp_dict['msg']))
+            raise ValueError("[login-get_sms_code] faild, msg is {}".format(resp_dict['msg']))
 
     # login
     def login(self, session, phone_num, sms_code):

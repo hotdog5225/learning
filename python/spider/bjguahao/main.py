@@ -89,12 +89,12 @@ if __name__ == '__main__':
         # validate captcha code
         login.check_code(session_request, code)
         # get sms code
-        try:
-            login.get_sms_code(session_request, code, person_info.phone_num)
-        except Exception as e:
-            print(e)
+        login.get_sms_code(session_request, code, person_info.phone_num)
         # read sms msg code from db
         sms_code = input("输入手机验证码: ")
+        while sms_code == '0':
+            login.get_sms_code(session_request, code, person_info.phone_num)
+            sms_code = input("输入手机验证码: ")
         time.sleep(2)
         login.login(session_request, person_info.phone_num, sms_code)
 
@@ -129,7 +129,7 @@ if __name__ == '__main__':
 
     # # TODO comment
     # # query which department can be registered
-    # hosCode = "12"
+    # hosCode = "1"
     # db_dept = DepartmentInfo()
     # dept_list = db_dept.get_all_dept_info_by_hosp_id(hosCode)
     # # 循环查询,直到有可挂号日期
@@ -146,12 +146,13 @@ if __name__ == '__main__':
     #     )
     #     availabel_days = register.get_availabe_days()
     #     if len(availabel_days) != 0:
-    #         if firstDeptCode == 'fd4cf8ebb5326d5466581f3bf6dcb079':
-    #             continue
     #         print(dept)
     #         print(availabel_days)
-    #         break
-    #     time.sleep(1)
+    #         exit()
+    #     time.sleep(3)
+    # exit()
+
+    register_fun(register_object, person_info)
 
     schedule.every().day.at("08:30:00").do(register_fun, register=register_object, person_info=person_info)
     schedule.every().day.at("16:00:00").do(register_fun, register=register_object, person_info=person_info)

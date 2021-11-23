@@ -1,17 +1,19 @@
 from proxy_crawler import Crawler
-from proxy_redis import IPProxyRedis
+from proxy_redis import ProxyRedis
 
 import logging
 
 POOL_UPPER_THRESHHOLD = 10000
 
-'''
-存储proxy到redis
-'''
+
 class IPProxyGetter:
+    '''
+    存储proxy到redis
+    '''
+
     def __init__(self):
         self.crawler = Crawler()
-        self.proxy_redis = IPProxyRedis()
+        self.proxy_redis = ProxyRedis()
 
     def is_over_threshhod(self):
         if self.proxy_redis.count() >= POOL_UPPER_THRESHHOLD:
@@ -27,6 +29,7 @@ class IPProxyGetter:
                 proxies = self.crawler.get_proxies(callback)
                 for proxy in proxies:
                     self.proxy_redis.add(proxy)
+
 
 if __name__ == '__main__':
     proxy_getter = IPProxyGetter()

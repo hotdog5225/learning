@@ -20,10 +20,12 @@ class ProxyMetaClass(type):
         attrs["__CrawlFuncCount__"] = count
         return type.__new__(cls, name, base, attrs)
 
-'''
-爬取proxy
-'''
+
 class Crawler(metaclass=ProxyMetaClass):
+    '''
+    爬取proxy
+    '''
+
     def get_proxies(self, callback):
         proxies = []
         for proxy in eval('self.{}()'.format(callback)):
@@ -53,6 +55,7 @@ class Crawler(metaclass=ProxyMetaClass):
                 th_tag_type = th_tag_list[3]
                 if (th_tag_level.string == '高匿' and re.search('HTTPS', th_tag_type.string)):
                     yield ':'.join([th_tag_ip.string.strip(), th_tag_port.string.strip()])
+
 
 if __name__ == '__main__':
     crawler = Crawler()

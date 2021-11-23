@@ -7,21 +7,15 @@ from redis import Redis
 from random import choice
 import redis
 
-import requests
-from bs4 import BeautifulSoup as bs
-import re
-
 MAX_SCORE = 100
 MIN_SCORE = 0
 INITIAL_SCORE = 10
 REDIS_SET_KEY = "proxies"
 
-'''
-提供redis存储接口
-'''
-class IPProxyRedis:
+
+class ProxyRedis:
     '''
-    存储模块
+    提供redis存储接口
     '''
 
     def __init__(self):
@@ -63,7 +57,7 @@ class IPProxyRedis:
         score = self.redis.zscore(REDIS_SET_KEY, str_proxy)
         if score and score > MIN_SCORE:
             logging.info('代理 %s 当前分数 %s 减1', str_proxy, score)
-            return self.redis.zincby(REDIS_SET_KEY, str_proxy, -1)
+            return self.redis.zincrby(REDIS_SET_KEY, -1, str_proxy)
         else:
             logging.info('移除代理 %s', str_proxy)
             return self.redis.zrem(REDIS_SET_KEY, str_proxy)
@@ -92,6 +86,7 @@ class IPProxyRedis:
         获取全部代理
         '''
         return self.redis.zrangebyscore(REDIS_SET_KEY, MIN_SCORE, MAX_SCORE)
+
 
 if __name__ == '__main__':
     redis = Redis()

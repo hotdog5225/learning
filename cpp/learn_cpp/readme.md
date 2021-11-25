@@ -23,3 +23,6 @@
 # friend
 - friend member function in a single file
 - friend member function in seperate file
+
+# object relation
+- std::reference_wrapper

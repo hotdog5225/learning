@@ -3,6 +3,7 @@
 //
 
 #include "TestClass.h"
+#include "IntArray.h"
 
 int main() {
     // call default constructor
@@ -19,7 +20,7 @@ int main() {
     // initialize static member vector<int>
     // call static member directly by Class
     std::cout << "[call static member through Class]: ";
-    for (const auto int_member : TestClass::static_vec) {
+    for (const auto int_member: TestClass::static_vec) {
         std::cout << std::to_string(int_member) << ", ";
     }
     std::cout << '\n';
@@ -28,6 +29,16 @@ int main() {
 
     // static function called, use Class Name as prefix
     std::cout << TestClass::get_private_static_member() << std::endl;
+
+    /*------------------*/
+
+    // use list initialization to initialize IntArray(customer object)
+    IntArray ia{1, 2, 3, 4, 5};
+//    ia.printArray();
+
+    // use  list assignment to initialize IntArray(customer objcet)
+    IntArray ia2 = {10, 9, 8, 7};
+//    ia2.printArray();
 
     return 0;
 }

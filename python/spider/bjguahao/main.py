@@ -89,11 +89,11 @@ if __name__ == '__main__':
         # validate captcha code
         login.check_code(session_request, code)
         # get sms code
-        login.get_sms_code(session_request, code, person_info.phone_num)
+        login.get_sms_code(encryptor, session_request, code, person_info.phone_num)
         # read sms msg code from db
         sms_code = input("输入手机验证码: ")
         while sms_code == '0':
-            login.get_sms_code(session_request, code, person_info.phone_num)
+            login.get_sms_code(encryptor, session_request, code, person_info.phone_num)
             sms_code = input("输入手机验证码: ")
         time.sleep(2)
         login.login(session_request, person_info.phone_num, sms_code)

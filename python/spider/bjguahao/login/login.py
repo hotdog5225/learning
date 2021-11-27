@@ -32,7 +32,7 @@ class Login:
             print(e)
 
         if len(code) != 4 or (not re.search('\d{4}', code)):
-            time.sleep(2)
+            time.sleep(3)
             self.get_captcha_code(session)
             self.recognize_code(session)
 
@@ -55,8 +55,9 @@ class Login:
         logging.info("validate captcha code ok!")
 
     # send SMS code
-    def get_sms_code(self, session, code, phone_num):
+    def get_sms_code(self, encryptor, session, code, phone_num):
         str_time = str(int(time.time()) * 1000)
+        phone_num = encryptor.encrypt(phone_num)
         url = 'https://www.114yygh.com/web/common/verify-code/get?_time={}&mobile={}&smsKey=LOGIN&code={}'.format(
             str_time, phone_num, code)
         resp = session.get(url)
@@ -65,8 +66,8 @@ class Login:
             raise ValueError("[login-get_sms_code] failed!")
         resp_dict = resp.json()
         if resp_dict['resCode'] != 0:
-            logging.error("[login-get_sms_code] faild, msg is {}".format(resp_dict['msg']))
-            raise ValueError("[login-get_sms_code] faild, msg is {}".format(resp_dict['msg']))
+            logging.error("[login-get_sms_code] failed, msg is {}".format(resp_dict['msg']))
+            raise ValueError("[login-get_sms_code] failed, msg is {}".format(resp_dict['msg']))
 
     # login
     def login(self, session, phone_num, sms_code):

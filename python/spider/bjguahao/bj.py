@@ -25,6 +25,8 @@
 # https://github.com/AI0TSec/blog/issues/8#tocbar--1tk0oef
 
 # verify code recognize
+# baidu OCR sdk
+# https://cloud.baidu.com/doc/OCR/s/wkibizyjk
 # https://programming.vip/docs/three-solutions-of-verification-code-recognition-in-python-crawler.html
 # https://medium.com/analytics-vidhya/solving-noisy-text-captchas-126734c3c717
 

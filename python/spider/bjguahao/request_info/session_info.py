@@ -33,6 +33,8 @@ class SessionInfo:
         str_time = str(int(time.time()) * 1000)
         cookie_key = '114_login_cookie'
         str_cookie = self.redis.get(cookie_key)
+        if str_cookie == None:
+            return False
 
         # cookie_dict = {}
         # cookie_list = str_cookie.split('; ')

@@ -163,3 +163,4 @@ secret.py
 __pycache__
 
 .git
+config.py

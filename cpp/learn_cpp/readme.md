@@ -13,6 +13,7 @@
 - static
   - static member 
   - static function
+- std::initializer_list for customer object
 
 # reference_and_pointer
 - const reference

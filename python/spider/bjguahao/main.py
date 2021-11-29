@@ -26,7 +26,7 @@ def say(arg):
 
 def register_fun(register, person_info):
     available_days = register.get_availabe_days()
-    totla_count = 10
+    totla_count = 5
     while totla_count > 0 and len(available_days) == 0:
         logging.warning(">>>>>>> 当前没有可预约日期")
         time.sleep(0.5)
@@ -127,30 +127,31 @@ if __name__ == '__main__':
         person_info=person_info,
     )
 
-    # # TODO comment
-    # # query which department can be registered
-    # hosCode = "1"
-    # db_dept = DepartmentInfo()
-    # dept_list = db_dept.get_all_dept_info_by_hosp_id(hosCode)
-    # # 循环查询,直到有可挂号日期
-    # for dept in dept_list:
-    #     firstDeptCode = dept[4]
-    #     secondDeptCode = dept[5]
-    #     register = Register(
-    #         firstDeptCode=firstDeptCode,
-    #         secondDeptCode=secondDeptCode,
-    #         hosCode=hosCode,
-    #         session=session_request,
-    #         font_decrypter=font_decryptor,
-    #         person_info=person_info,
-    #     )
-    #     availabel_days = register.get_availabe_days()
-    #     if len(availabel_days) != 0:
-    #         print(dept)
-    #         print(availabel_days)
-    #         exit()
-    #     time.sleep(3)
-    # exit()
+    # TODO comment
+    # query which department can be registered
+    hosCode = "1"
+    db_dept = DepartmentInfo()
+    dept_list = db_dept.get_all_dept_info_by_hosp_id(hosCode)
+    # 循环查询,直到有可挂号日期
+    for dept in dept_list:
+        firstDeptCode = dept[4]
+        secondDeptCode = dept[5]
+        register = Register(
+            firstDeptCode=firstDeptCode,
+            secondDeptCode=secondDeptCode,
+            hosCode=hosCode,
+            session=session_request,
+            font_decrypter=font_decryptor,
+            person_info=person_info,
+        )
+        availabel_days = register.get_availabe_days()
+        time.sleep(3)
+        if len(availabel_days) != 0:
+            print(dept)
+            print(availabel_days)
+            exit()
+        time.sleep(3)
+    exit()
 
     register_fun(register_object, person_info)
 

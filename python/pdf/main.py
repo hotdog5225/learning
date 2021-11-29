@@ -9,7 +9,7 @@ def getPdf(url, name):
     pdfkit.from_url(url, name)
     return name
 
-getPdf("https://www.learncpp.com/cpp-tutorial/forward-declarations/", "2.6 — Forward declarations and definitions.pdf")
+getPdf("https://www.learncpp.com/cpp-tutorial/chapter-16-comprehensive-quiz/", "16.x_Chapter 16 comprehensive quiz.pdf")
 sys.exit()
 
 f = open("urls.txt")

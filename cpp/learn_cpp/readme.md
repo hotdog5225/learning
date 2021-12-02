@@ -27,3 +27,6 @@
 
 # object relation
 - std::reference_wrapper
+
+# inheritance
+- construct call order

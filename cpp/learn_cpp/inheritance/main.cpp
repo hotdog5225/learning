@@ -4,17 +4,14 @@
 
 #include <iostream>
 
-class Person {
+class Base {
 public:
     int m_age{};
-    std::string m_name{};
 
     // has default value, so "default constructor" can be omitted
-    Person(const std::string &name = "", int age = 0) : m_age{age}, m_name{name} {};
-
-    const std::string &get_name() const {
-        return m_name;
-    }
+    Base(int age = 0) : m_age{age} {
+        std::cout << "initialize Base" << std::endl;
+    };
 
     int get_age() const {
         return m_age;
@@ -22,17 +19,21 @@ public:
 
 };
 
-class BaseballPlayer: public Person {
+class Derived : public Base {
 public:
-    double m_battingAverage{};
-    int m_homeRuns{};
+    double m_salary{};
 
     // has default value, so "default constructor" can be omitted
-    BaseballPlayer(double battingAverage = 0.0, int homeRuns = 0): m_battingAverage{battingAverage}, m_homeRuns{homeRuns} {};
+    Derived(double salary = 0.0) : m_salary{salary} {
+        std::cout << "initialize Derived" << std::endl;
+    };
 };
 
 int main() {
-    BaseballPlayer b{};
-    b.m_name = "hotdog";
-    std::cout << b.get_name() << std::endl;
+    // when c++ construct a Class object, it constructs object according to the inheritance tree
+    Derived d{};
+    /*
+     * initialize Base
+     * initialize Derived
+     */
 }

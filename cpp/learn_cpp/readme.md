@@ -23,10 +23,11 @@
 
 # friend
 - friend member function in a single file
-- friend member function in seperate file
+- friend member function in separate file
 
 # object relation
 - std::reference_wrapper
 
 # inheritance
 - construct call order
+- initialize member of Base, when constructor of Derived class called

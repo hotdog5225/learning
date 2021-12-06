@@ -1,4 +1,5 @@
 from threading import Thread
+# 条件变量
 from threading import Condition
 
 class TiamMaoJingLing(Thread):

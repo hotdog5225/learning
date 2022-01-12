@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# ./005_position_args.sh --flag pos1 --flag pos2
+# 执行命令: ./005_position_args.sh --flag pos1 --flag pos2
 
 echo "number of position args: $#"
 

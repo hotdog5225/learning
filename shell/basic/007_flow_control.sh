@@ -14,3 +14,5 @@
 		"hotdog" ) echo "hello $name" ;;
 		*	) echo "hello other people";;
 	esac
+
+# 循环

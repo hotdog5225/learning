@@ -4,6 +4,7 @@
 - const class object
 
 # initialization
+- signed(负数) 转成 unsigned: 取模运算(可以直接简记为: 负数+模)
 - constructor
   - default constructor
   - custom constructor

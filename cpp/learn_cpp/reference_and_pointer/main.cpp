@@ -6,8 +6,15 @@
 #include <functional>
 
 #include "TestClass.h"
+#include "test_const.h"
+#include "test_const_2.h"
 
 int main() {
+    // 引用必须初始化
+    // 编译报错error: declaration of reference variable 'ref_a' requires an initializer
+//    int &ref_a;
+
+    /* ******************** */
 
     // call default constructor (supplied by compiler)
     TestClass non_const_t{};

@@ -1,10 +1,13 @@
 # 00_object
+- type object class的关系
 - object的四个属性
 - build-in 内置类型概览
 
 # 01_magic_function
-- __repr__
-- __str__
+- __repr__  , __str__
+- __getitem__
+- __len__
+- __abs__, __add__
 
 # 02_multi_thread
 - GIL

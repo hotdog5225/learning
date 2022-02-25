@@ -22,6 +22,8 @@
 - isinstance()可以判断继承链
 - 类变量(类似static) vs 对象变量
 - 静态方法@staticmethod 类方法@classmethod 实例方法
+- 类的私有变量 __privateName
+- 自省机制: dir() __dict__
 
 # third_lib
 - argparse

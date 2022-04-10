@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 template<typename T>
 // template type declaration

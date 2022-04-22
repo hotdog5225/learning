@@ -28,6 +28,12 @@
 # third_lib
 - argparse
 - logging
+- concurrent.futures 线程池
 
 # tools
 - copy_file 实时监控一个文件, 并将内容追加到另外一个文件.
+
+# snippets
+- 格式化字符串的集中方式
+- list 操作
+  - list去重

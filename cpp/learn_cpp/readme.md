@@ -1,3 +1,7 @@
+# stack_unwiding
+
+- 利用栈展开, 避免内存泄漏.
+
 # const
 
 - const member

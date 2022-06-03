@@ -1,3 +1,7 @@
+# smart_pointer
+
+- 手动实现智能指针
+
 # stack_unwiding
 
 - 利用栈展开, 避免内存泄漏.

@@ -1,86 +1,86 @@
-# https://pytorch-tutorial.readthedocs.io/en/latest/tutorial/chapter03_intermediate/3_2_1_cnn_convnet_mnist/
+#!/usr/bin/env python
+# coding: utf-8
+
+'''
+自己定义权重参数W, b
+自己定义Model (一个隐藏层, 一个输出层)
+    全链接层 WX+b
+'''
+
 import torch
-import torch.nn as nn
+
+# 下载数据
+from pathlib import Path
+import requests
+DATA_PATH = Path("data")
+PATH = DATA_PATH / "mnist"
+PATH.mkdir(parents=True,exist_ok=True)
+URL = "http://deeplearning.net/data/mnist/"
+FILENAME = "mnist.pkl.gz"
+
+if not (PATH/FILENAME).exists():
+    content = requests.get(URL + FILENAME).content
+    (PATH / FILENAME).open("wb").write(content)
+
+# 加载数据
+import pickle
+import gzip
+
+with gzip.open((PATH / FILENAME).as_posix(), "rb")as f:
+    ((x_train, y_train),(x_valid, y_valid),_) = pickle.load(f, encoding="latin-1") # pickle格式的包, 得到numpy.ndarray
+
+# 展示数据
+from matplotlib import pyplot
+pyplot.imshow(x_train[0].reshape((28, 28)), cmap="gray")
+# print(x_train.shape) # (50000, 784)
+
+# 注意数据需转换成tensor才能参与后续建模训练
+import torch
+# ndarray -> tensor转换
+x_train,y_train,x_valid,y_valid, y_valid = map(
+    torch.tensor, (x_train,y_train, x_valid,y_valid, y_valid)
+)
+n,c=x_train.shape
+x_train, x_train.shape, y_train.min(), y_train.max
+
+# torch.nn.functional & nn.Module
+    # torch.nn.functional中有很多功能,后续会常用的。那什么时候使用nn.Module,什么时候使用nn.functional呢?
+    # 一般情况下,如果模型有可学习的参数,最好用nn.Module,其他情况nn.functional相对更简单一些
 import torch.nn.functional as F
-import torch.optim as optim
-from torchvision import datasets, transforms
-torch.__version__
 
-BATCH_SIZE=512 #大概需要2G的显存
-EPOCHS=20 # 总共训练批次
-DEVICE = torch.device("mps" if torch.backends.mps.is_available() else "cpu") # 让torch判断是否使用GPU，建议使用GPU环境，因为会快很多
+loss_func=F.cross_entropy # loss_func(model(xb), yb)
+def model(xb):
+    return xb.mm(weights) + bias
 
-train_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('data', train=True, download=True, 
-                       transform=transforms.Compose([
-                           transforms.ToTensor(),
-                           transforms.Normalize((0.1307,), (0.3081,))
-                       ])),
-        batch_size=BATCH_SIZE, shuffle=True)
+bs = 64 # bach_size
+xb = x_train[:bs] # mini-batch
+yb = y_train[:bs]
+weights = torch.randn([784, 10], dtype=torch.float, requires_grad=True)
+bias = torch.randn([10], requires_grad=True)
 
-test_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('data', train=False, transform=transforms.Compose([
-                           transforms.ToTensor(),
-                           transforms.Normalize((0.1307,), (0.3081,))
-                       ])),
-        batch_size=BATCH_SIZE, shuffle=True)
 
-class ConvNet(nn.Module):
+# 创建一个model来更简化代码
+    # 必须继承nn.Module且在其构造函数中需调用nn.Module的构造函数
+    # 无需写反向传播函数,nn.Module能够利用autograd自动实现反向传幸播
+    # Module中的可学习参数可以通过named_parameters()或者parameters()返回迭代器
+from torch import nn
+class Mnist_NN(nn.Module):
     def __init__(self):
         super().__init__()
-        # 1,28x28
-        self.conv1=nn.Conv2d(1,10,5) # 10, 24x24
-        self.conv2=nn.Conv2d(10,20,3) # 128, 10x10
-        self.fc1 = nn.Linear(20*10*10,500)
-        self.fc2 = nn.Linear(500,10)
-    def forward(self,x):
-        in_size = x.size(0)
-        out = self.conv1(x) #24
-        out = F.relu(out)
-        out = F.max_pool2d(out, 2, 2)  #12
-        out = self.conv2(out) #10
-        out = F.relu(out)
-        out = out.view(in_size,-1)
-        out = self.fc1(out)
-        out = F.relu(out)
-        out = self.fc2(out)
-        out = F.log_softmax(out,dim=1)
-        return out
+        self.hidden1 = nn.Linear(784, 128)
+        self.hidden2 = nn.Linear(128,256)
+        self.out = nn.Linear(256,10)
+        self.dropout=nn.Dropout(0.5)
 
-model = ConvNet().to(DEVICE)
-optimizer = optim.Adam(model.parameters())
+    def forward(self, x):
+        x = F.relu(self.hiddenl(x))
+        x=self.dropout(x)
+        x = F.relu(self.hidden2(x))
+        x = self.dropout(x)
+        x = self.out(x)
+        return x
 
-def train(model, device, train_loader, optimizer, epoch):
-    model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data, target = data.to(device), target.to(device)
-        optimizer.zero_grad()
-        output = model(data)
-        loss = F.nll_loss(output, target)
-        loss.backward()
-        optimizer.step()
-        if(batch_idx+1)%30 == 0: 
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.item()))
 
-def test(model, device, test_loader):
-    model.eval()
-    test_loss = 0
-    correct = 0
-    with torch.no_grad():
-        for data, target in test_loader:
-            data, target = data.to(device), target.to(device)
-            output = model(data)
-            test_loss += F.nll_loss(output, target, reduction='sum').item() # 将一批的损失相加
-            pred = output.max(1, keepdim=True)[1] # 找到概率最大的下标
-            correct += pred.eq(target.view_as(pred)).sum().item()
 
-    test_loss /= len(test_loader.dataset)
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-        test_loss, correct, len(test_loader.dataset),
-        100. * correct / len(test_loader.dataset)))
 
-for epoch in range(1, EPOCHS + 1):
-    train(model, DEVICE, train_loader, optimizer, epoch)
-    test(model, DEVICE, test_loader)
+

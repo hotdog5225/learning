@@ -8,6 +8,13 @@ __pycache__/
 # C extensions
 *.so
 
+# data
+checkpoint/
+data/
+logs/
+output/
+
+
 # Distribution / packaging
 .Python
 env/

@@ -63,7 +63,7 @@ bias = torch.randn([10], requires_grad=True)
     # 必须继承nn.Module且在其构造函数中需调用nn.Module的构造函数
     # 无需写反向传播函数,nn.Module能够利用autograd自动实现反向传幸播
     # Module中的可学习参数可以通过named_parameters()或者parameters()返回迭代器
-from torch import nn
+from torch import nn # 神经网络
 class Mnist_NN(nn.Module):
     def __init__(self):
         super().__init__()
